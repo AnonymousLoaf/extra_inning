@@ -1,4 +1,4 @@
-from get_nominations import CSVData
+from extra_inning.get_nominations import CSVData
 import csv
 import os
 
