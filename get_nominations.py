@@ -1,4 +1,4 @@
-from extra_inning.player import Player
+from player import Player
 import csv
 
 class CSVData:

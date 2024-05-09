@@ -1,8 +1,8 @@
-class ComparePlayer:
-    def __init__(self):
-        pass
+def safe_float(value):
+    try:
+        return float(value)
+    except ValueError:
+        return 0
 
-    def get_score(self, player1, player2, *args):
-        player1_score = sum([getattr(player1, arg) for arg in args if isinstance(getattr(player1, arg), (int, float))])
-        player2_score = sum([getattr(player2, arg) for arg in args if isinstance(getattr(player2, arg), (int, float))])
-        return player1_score, player2_score
+def sort_players_defensive(players):
+    return sorted(players, key=lambda x: (safe_float(x.FieldingPerc), safe_float(x.TotalChances), safe_float(x.Assists), safe_float(x.Putouts)), reverse=True)
