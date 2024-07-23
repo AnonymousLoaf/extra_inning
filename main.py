@@ -3,7 +3,6 @@ from gui import PlayerNominationApp as PA
 from load import load_players, get_attr_names
 from export import export_to_excel
 from ttkthemes import ThemedTk
-from player import Player
 
 def run_script(self):
     #Get the file path
