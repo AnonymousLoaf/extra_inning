@@ -4,18 +4,58 @@ def safe_float(value):
     except ValueError:
         return 0
 
+
 def players_defensive_score(players):
-    stats_to_check = ["FieldingPerc", "TotalChances", "Assists", "Putouts", "ArmVelo"]
-    return sorted(players, key=lambda x: tuple(safe_float(getattr(x, stat)) for stat in stats_to_check), reverse=True)
+    stats_to_check = [
+        "FieldingPerc",
+        "TotalChances",
+        "Assist",
+        "Putouts",
+        "ArmVelo"]
+    return sorted(
+        players,
+        key=lambda x: tuple(safe_float(getattr(x, stat)) for stat in stats_to_check),
+        reverse=True,
+    )
+
 
 def players_pitcher_score(players):
-    stats_to_check = ["PlayerERA", "PlayerBAA", "PlayerKs", "PlayerBB", "PlayerWHIP", "PlayerFastballSpeed", "PlayerChangeUpSpeed", "PlayerIP"]
-    return sorted(players, key=lambda x: tuple(safe_float(getattr(x, stat)) for stat in stats_to_check), reverse=True)
+    stats_to_check = [
+        "PlayerERA",
+        "PlayerBAA",
+        "PlayerKs",
+        "PlayerBB",
+        "PlayerWHIP",
+        "PlayerFastballSpeed",
+        "PlayerChangeUpSpeed",
+        "PlayerIP",
+    ]
+    return sorted(
+        players,
+        key=lambda x: tuple(safe_float(getattr(x, stat)) for stat in stats_to_check),
+        reverse=True,
+    )
+
 
 def players_catcher_score(players):
-    stats_to_check = ["PlayerPopTime", "ArmVelo"]
-    return sorted(players, key=lambda x: tuple(safe_float(getattr(x, stat)) for stat in stats_to_check), reverse=True)
+    stats_to_check = [
+        "PlayerPopTime",
+        "ArmVelo"]
+    return sorted(
+        players,
+        key=lambda x: tuple(safe_float(getattr(x, stat)) for stat in stats_to_check),
+        reverse=True,
+    )
+
 
 def players_batting_score(players):
-    stats_to_check = ["PlayerBA", "PlayerOBP", "PlayerOPS", "PlayerQAB"]
-    return sorted(players, key=lambda x: tuple(safe_float(getattr(x, stat)) for stat in stats_to_check), reverse=True)
+    stats_to_check = [
+        "PlayerBA",
+        "PlayerOBP",
+        "PlayerOPS",
+        "PlayerQAB"]
+    return sorted(
+        players,
+        key=lambda x: tuple(safe_float(getattr(x, stat)) for stat in stats_to_check),
+        reverse=True,
+    )
