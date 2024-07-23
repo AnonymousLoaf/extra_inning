@@ -1,8 +1,11 @@
 import os
 import tkinter as tk
-import pandas as pd
 from tkinter import filedialog, messagebox
+from ttkthemes import ThemedTk
+import ttkbootstrap as ttk
+import pandas as pd
 from get_nominations import ExcelData
+from player import Player
 from compare import (
     players_pitcher_score,
     players_defensive_score,
@@ -16,19 +19,31 @@ class PlayerNominationApp:
         self.root = root
         self.root.title("Player Nomination Application")
 
-        self.file_label = tk.Label(self.root, text="Select XLSX File:")
-        self.file_label.pack()
+        self.setup_ui()
 
-        self.file_entry = tk.Entry(self.root, width=50)
-        self.file_entry.pack()
+    def setup_ui(self):
+        self.root.geometry("600x300")
+        self.root.style = ttk.Style("darkly")  # Change style here if desired
 
-        self.browse_button = tk.Button(
-            self.root, text="Browse", command=self.browse_file
+        # Frame for padding
+        frame = ttk.Frame(self.root, padding=20)
+        frame.pack(fill=tk.BOTH, expand=True)
+
+        self.file_label = ttk.Label(frame, text="Select XLSX File:")
+        self.file_label.pack(pady=5)
+
+        self.file_entry = ttk.Entry(frame, width=50)
+        self.file_entry.pack(pady=5)
+
+        self.browse_button = ttk.Button(
+            frame, text="Browse", command=self.browse_file, bootstyle="info"
         )
-        self.browse_button.pack()
+        self.browse_button.pack(pady=5)
 
-        self.run_button = tk.Button(self.root, text="Run", command=self.run_script)
-        self.run_button.pack()
+        self.run_button = ttk.Button(
+            frame, text="Run", command=self.run_script, bootstyle="success"
+        )
+        self.run_button.pack(pady=5)
 
     def browse_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("Excel Files", "*.xlsx")])
@@ -48,21 +63,17 @@ class PlayerNominationApp:
 
         output_directory = os.path.dirname(file)
 
-        find = "Mady Rhone"
-        
-        player = data.get(find)
-        if player is None:
-            messagebox.showerror("Error", f"Cannot find player '{find}'.")
-            return
+        test_girl = Player()
+        for player in players:
+            test_in, test_bat = test_girl.calculate_player_score(player)
+            print(test_in, test_bat)
 
-        pitchers = [
-            player
-            for player in players
-            if player.PlayerPosition == "Pitcher"
-        ]
+        pitchers = [player for player in players if player.PlayerPosition == "Pitcher"]
         pitchers = players_pitcher_score(pitchers)
         self.save_to_excel(
-            pitchers, os.path.join(output_directory, "Pitchers.xlsx"), data.attr_names
+            pitchers,
+            os.path.join(output_directory, "Pitchers.xlsx"),
+            data.attr_names,
         )
 
         defensive_players = [
@@ -71,26 +82,32 @@ class PlayerNominationApp:
             if player.PlayerPosition in ["MIF", "CIF", "Outfielder"]
         ]
         defensive_players = players_defensive_score(defensive_players)
+
+        # Sorting players by fielding percentage
+        defensive_players = sorted(
+            defensive_players, key=lambda x: x.FieldingPerc, reverse=True
+        )
+
         self.save_to_excel(
             defensive_players,
             os.path.join(output_directory, "Defense.xlsx"),
             data.attr_names,
         )
 
-        catchers = [
-            player
-            for player in players
-            if player.PlayerPosition == "Catcher"
-        ]
+        catchers = [player for player in players if player.PlayerPosition == "Catcher"]
         catchers = players_catcher_score(catchers)
         self.save_to_excel(
-            catchers, os.path.join(output_directory, "Catchers.xlsx"), data.attr_names
+            catchers,
+            os.path.join(output_directory, "Catchers.xlsx"),
+            data.attr_names,
         )
 
         batters = players
         batters = players_batting_score(batters)
         self.save_to_excel(
-            batters, os.path.join(output_directory, "Batters.xlsx"), data.attr_names
+            batters,
+            os.path.join(output_directory, "Batters.xlsx"),
+            data.attr_names,
         )
 
         messagebox.showinfo("Success", "Processing complete.")
@@ -102,6 +119,7 @@ class PlayerNominationApp:
 
 
 if __name__ == "__main__":
-    root = tk.Tk()
+
+    root = ThemedTk(theme="cosmo")  # Use a ThemedTk for nicer aesthetics
     app = PlayerNominationApp(root)
     root.mainloop()

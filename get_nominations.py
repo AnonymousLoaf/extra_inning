@@ -21,7 +21,7 @@ class ExcelData:
     def update_player_attr_names(self):
         for player in self.players:
             for old_name, new_name in self.attr_mapping.items():
-                if hasattr(player, old_name.strip()):
+                if hasattr(player, old_name):
                     setattr(player, new_name, getattr(player, old_name))
                     delattr(player, old_name)
         self.attr_names = list(self.attr_mapping.values())
@@ -70,10 +70,10 @@ class ExcelData:
         "List 3 top events & 3 top opponents": "PlayerEventsandOpponents",
         "Region": "PlayerRegion",
         "Instagram": "PlayerInstagram",
-        "Twitter": "PlayerTwitter",
-        "Parent Name": "ParentName",
-        "Parent Email": "ParentEmail",
-        "Parent Phone": "ParentPhone",
+        "Twitter  ": "PlayerTwitter",
+        "Parent name": "ParentName",
+        "Parent email": "ParentEmail",
+        "Parent phone": "ParentPhone",
         "Player Hometown/State": "PlayerHometown",
         "Coach Quote": "PlayerQuote",
         "Headshot": "PlayerHeadshot",
