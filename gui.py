@@ -21,7 +21,7 @@ class PlayerNominationApp:
         self.title_label = ttk.Label(frame, text="Player Nomination Ranking", font=("", 18))
         self.title_label.pack(pady=5)
 
-        self.file_label = ttk.Label(frame, text="Select XLSX File:")
+        self.file_label = ttk.Label(frame, text="Select Raw Excel File:")
         self.file_label.pack(pady=5)
 
         self.file_entry = ttk.Entry(frame, width=50)
