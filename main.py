@@ -22,12 +22,15 @@ class PlayerNominationApp:
         self.setup_ui()
 
     def setup_ui(self):
-        self.root.geometry("600x300")
+        self.root.geometry("500x400")
         self.root.style = ttk.Style("darkly")  # Change style here if desired
 
         # Frame for padding
         frame = ttk.Frame(self.root, padding=20)
         frame.pack(fill=tk.BOTH, expand=True)
+
+        self.title_label = ttk.Label(frame, text="Player Nomination Ranking", font=("",18))
+        self.title_label.pack(pady=5)
 
         self.file_label = ttk.Label(frame, text="Select XLSX File:")
         self.file_label.pack(pady=5)

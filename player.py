@@ -36,31 +36,3 @@ class Player:
             ]
         )
         return infield_stats, batting_stats
-
-    def clean(self):
-        for key, value in self.__dict__.items():
-            percentages = ["OBP", "OPS", "QAB", "FieldingPerc"]
-            number = [
-                "TotalChances",
-                "Assists",
-                "Putouts",
-                "ERA",
-                "BAA",
-                "FBandCU",
-                "KBB",
-                "PopTime",
-            ]
-            if key in percentages:
-                pattern = r"\b(\d+\.\d+)\b"
-                matches = re.findall(pattern, value)
-                if matches:
-                    decimal_matches = [Decimal(match) for match in matches]
-                    avg = sum(decimal_matches) / Decimal(len(decimal_matches))
-                    avg_rounded = avg.quantize(Decimal("0.001"), rounding=ROUND_HALF_UP)
-                    avg_float = float(avg_rounded)
-                    setattr(self, key, avg_float)
-            elif key in number:
-                pattern = r"\b(\d+)\b"
-                matches = re.findall(pattern, value)
-                if matches:
-                    setattr(self, key, int(matches[0]))
