@@ -13,15 +13,15 @@ class PlayerNominationApp:
 
     def setup_ui(self):
         self.root.geometry("500x400")
-        self.root.style = ttk.Style("darkly")
+        #self.root.style = ttk.Style("darkly")
 
         frame = ttk.Frame(self.root, padding=20)
         frame.pack(fill=tk.BOTH, expand=True)
 
-        self.title_label = ttk.Label(frame, text="Player Nomination Ranking", font=("", 18))
+        self.title_label = ttk.Label(frame, text="Player Nomination Ranking", font=("Times New Roman", 18, "bold"))
         self.title_label.pack(pady=5)
 
-        self.file_label = ttk.Label(frame, text="Select Raw Excel File:")
+        self.file_label = ttk.Label(frame, text="Select Raw Excel File:", font=("Times New Roman", 14))
         self.file_label.pack(pady=5)
 
         self.file_entry = ttk.Entry(frame, width=50)
@@ -30,7 +30,7 @@ class PlayerNominationApp:
         self.browse_button = ttk.Button(frame, text="Browse", command=self.browse_file, bootstyle="info")
         self.browse_button.pack(pady=5)
 
-        self.run_button = ttk.Button(frame, text="Run", command=self.run_callback, bootstyle="success")
+        self.run_button = ttk.Button(frame, text="Run", command=lambda: self.run_callback(self), bootstyle="success")
         self.run_button.pack(pady=5)
 
     def browse_file(self):
@@ -50,3 +50,6 @@ class PlayerNominationApp:
 
     def finish_message(self):
         messagebox.showinfo("Success", "Player nominations have been successfully ranked.")
+
+    def get_file(self):
+        return self.file_entry.get()
