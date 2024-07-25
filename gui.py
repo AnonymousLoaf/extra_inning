@@ -46,10 +46,21 @@ class PlayerNominationApp:
             message = "File does not exist."
         elif type == "wrongFile":
             message = "Please select an Excel file."
+        elif type == "empty":
+            message = "Please select a file."
         messagebox.showerror("Error: ", message)
 
     def finish_message(self):
         messagebox.showinfo("Success", "Player nominations have been successfully ranked.")
 
     def get_file(self):
+        if not os.path.isfile(self.file_entry.get()):
+            self.error_message("file")
+            return None
+        elif not self.file_entry.get().endswith(".xlsx"):
+            self.error_message("wrongFile")
+            return None
+        elif self.file_entry.get() == "":
+            self.error_message("empty")
+            return None
         return self.file_entry.get()

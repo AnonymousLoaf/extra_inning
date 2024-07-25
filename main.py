@@ -7,12 +7,6 @@ from ttkthemes import ThemedTk
 def run_script(app):
     # Get the file path
     file = app.get_file()
-    if not os.path.isfile(file):
-        app.error_message("file")
-        return
-    elif not file.endswith(".xlsx"):
-        app.error_message("wrongFile")
-        return
 
     # Load the data
     players = load_players(file)
@@ -29,6 +23,4 @@ def run_script(app):
 if __name__ == "__main__":
     root = ThemedTk(theme="cosmo")  # Use a ThemedTk for nicer aesthetics
     app = PlayerNominationApp(root, run_script)
-    root.mainloop()  # Start the GUI application
-    run_script(app)
-    
+    root.mainloop()

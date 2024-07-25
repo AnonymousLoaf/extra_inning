@@ -12,11 +12,7 @@ def players_defensive_score(players):
         "Assist",
         "Putouts",
         "ArmVelo"]
-    return sorted(
-        players,
-        key=lambda x: tuple(safe_float(getattr(x, stat)) for stat in stats_to_check),
-        reverse=True,
-    )
+    return sorted(players, key=lambda x: tuple(safe_float(getattr(x, stat)) for stat in stats_to_check), reverse=True)
 
 
 def players_pitcher_score(players):
@@ -30,32 +26,11 @@ def players_pitcher_score(players):
         "PlayerChangeUpSpeed",
         "PlayerIP",
     ]
-    return sorted(
-        players,
-        key=lambda x: tuple(safe_float(getattr(x, stat)) for stat in stats_to_check),
-        reverse=True,
-    )
+    return sorted(players, key=lambda x: tuple(safe_float(getattr(x, stat)) for stat in stats_to_check), reverse=True)
 
 
 def players_catcher_score(players):
     stats_to_check = [
         "PlayerPopTime",
         "ArmVelo"]
-    return sorted(
-        players,
-        key=lambda x: tuple(safe_float(getattr(x, stat)) for stat in stats_to_check),
-        reverse=True,
-    )
-
-
-def players_batting_score(players):
-    stats_to_check = [
-        "PlayerBA",
-        "PlayerOBP",
-        "PlayerOPS",
-        "PlayerQAB"]
-    return sorted(
-        players,
-        key=lambda x: tuple(safe_float(getattr(x, stat)) for stat in stats_to_check),
-        reverse=True,
-    )
+    return sorted(players, key=lambda x: tuple(safe_float(getattr(x, stat)) for stat in stats_to_check), reverse=True)
