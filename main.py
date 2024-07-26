@@ -1,7 +1,7 @@
-import os
 from gui import PlayerNominationApp
 from load import load_players, get_attr_names
 from export import export_to_excel
+from player import Player
 from ttkthemes import ThemedTk
 
 def run_script(app):
@@ -13,10 +13,11 @@ def run_script(app):
 
     # Calculate player scores
     for player in players:
-        player.calculate_player_score()
+        Player.calculate_player_score(player)
+        print(player.PlayerFirstName, player.PlayerLastName, player.pitching_score)
 
     # Export to excel
-    export_to_excel(players, file, get_attr_names(file))
+    # export_to_excel(players, file, get_attr_names(file))
     app.finish_message()
 
 

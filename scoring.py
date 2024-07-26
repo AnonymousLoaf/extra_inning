@@ -23,14 +23,12 @@ def player_pitching_score(player):
     BB_Score = player.PlayerBB * 0.75
     total_score = ERA_Score + WHIP_Score + BAA_Score + Ks_Score + IP_Score + BB_Score
     return total_score
-    
-
 
 def player_catching_score(player):
-    SB_ATT_Score = player.PlayerSBATT * 1
+    #SB_ATT_Score = player.PlayerSBATT * 1
     PopTime_Score = player.PlayerPopTime * 0.95
     ArmVelo_Score = player.PlayerArmVelo * 0.9
-    total_score = SB_ATT_Score + PopTime_Score + ArmVelo_Score
+    total_score = PopTime_Score + ArmVelo_Score #+ SB_ATT_Score 
     return total_score
 
 def player_batting_score(player):
@@ -40,3 +38,5 @@ def player_batting_score(player):
     AtBats_Score = player.PlayerAtBats * 0.85
     StrikeOuts_Score = player.PlayerStrikeOuts * 0.8
     Hits_Score = player.PlayerHits * 0.75
+    total_score = AVG_Score + OPS_Score + OBP_Score + AtBats_Score + StrikeOuts_Score + Hits_Score
+    return total_score
