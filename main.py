@@ -59,14 +59,10 @@ class PlayerNominationApp:
         data = ExcelData(file)
         data.load_players()
         data.update_player_attr_names()
+        data.clean()
         players = data.players
 
         output_directory = os.path.dirname(file)
-
-        test_girl = Player()
-        for player in players:
-            test_in, test_bat = test_girl.calculate_player_score(player)
-            print(test_in, test_bat)
 
         pitchers = [player for player in players if player.PlayerPosition == "Pitcher"]
         pitchers = players_pitcher_score(pitchers)
@@ -119,7 +115,6 @@ class PlayerNominationApp:
 
 
 if __name__ == "__main__":
-
     root = ThemedTk(theme="cosmo")  # Use a ThemedTk for nicer aesthetics
     app = PlayerNominationApp(root)
     root.mainloop()
