@@ -4,6 +4,7 @@ from export import export_to_excel
 from player import Player
 from ttkthemes import ThemedTk
 
+
 def run_script(app):
     # Get the file path
     file = app.get_file()
