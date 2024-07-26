@@ -15,10 +15,11 @@ def run_script(app):
     # Calculate player scores
     for player in players:
         Player.calculate_player_score(player)
-        print(player.PlayerFirstName, player.PlayerLastName, player.pitching_score)
+        #print(player.PlayerFirstName, player.PlayerLastName, player.pitching_score)
 
+    print(players[0])
     # Export to excel
-    # export_to_excel(players, file, get_attr_names(file))
+    export_to_excel(players, file, get_attr_names(file))
     app.finish_message()
 
 
