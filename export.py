@@ -4,6 +4,7 @@ from scoring import (
     player_pitching_score,
     player_defense_score,
     player_catching_score,
+    player_batting_score,
 )
 
 
