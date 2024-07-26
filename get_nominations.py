@@ -26,6 +26,11 @@ class ExcelData:
                     delattr(player, old_name)
         self.attr_names = list(self.attr_mapping.values())
 
+    def clean(self):
+        for player in self.players:
+            if player.FieldingPerc > 1:
+                player.FieldingPerc = float(player.FieldingPerc / 100)
+
     def get(self, name):
         for player in self.players:
             if player.PlayerFirstName + " " + player.PlayerLastName == name:

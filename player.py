@@ -1,4 +1,11 @@
-from scoring import player_defense_score, player_pitching_score, player_catching_score, player_batting_score
+from scoring import (
+    player_defense_score,
+    player_pitching_score,
+    player_catching_score,
+    player_batting_score,
+)
+
+
 class Player:
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
@@ -18,4 +25,3 @@ class Player:
         self.catching_score = player_catching_score(self)
         self.defensive_score = player_defense_score(self)
         self.batting_score = player_batting_score(self)
-
