@@ -1,6 +1,7 @@
 import pandas as pd
 from player import Player
 
+
 class ExcelData:
     def __init__(self, file):
         self.file = file
@@ -9,8 +10,8 @@ class ExcelData:
 
     def map_column(self, column_name):
         keyword_mappings = {
-            "PlayerFirstName": ["name", "first", "player"],
-            "PlayerLastName": ["name", "last", "player"],
+            "PlayerFirstName": ["name", "first", "player", "player"],
+            "PlayerLastName": ["name", "last", "player", "player"],
             "PlayerRanking": ["rank", "ranked"],
             "ClubCoachFirstName": ["coach", "first"],
             "ClubCoachLastName": ["coach", "last"],
@@ -41,6 +42,7 @@ class ExcelData:
             "PlayerArmVelo2": ["arm", "velo"],
             "PlayerChangeUpSpeed": ["change", "speed"],
             "PlayerPopTime": ["pop", "time"],
+            "PlayerArmVelo": ["arm", "velo"],
             "PlayerRankingEstimate": ["rank", "estimate"],
             "PlayerAccomplishments": ["accomplishments"],
             "PlayerEventsandOpponents": ["events", "opponents"],
@@ -64,6 +66,7 @@ class ExcelData:
         try:
             df = pd.read_excel(self.file)
             df.rename(columns=lambda x: self.map_column(x), inplace=True)
+            self.attr_names = df.columns.tolist()
             for _, row in df.iterrows():
                 self.players.append(Player(**row.to_dict()))
         except FileNotFoundError:

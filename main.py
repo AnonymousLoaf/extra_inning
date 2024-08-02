@@ -10,7 +10,7 @@ def run_script(app):
     file = app.get_file()
 
     # Load the data
-    players = load_players(file)
+    players, attr_names = load_players(file)
 
     # Calculate player scores
     for player in players:
