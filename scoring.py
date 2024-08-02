@@ -24,8 +24,9 @@ def player_pitching_score(player):
     total_score = era_score + whip_score + baa_score + ks_score + ip_score + bb_score
     return total_score
 
+
 def player_catching_score(player):
-    #SB_ATT_Score = player.PlayerSBATT * 1
+    # SB_ATT_Score = player.PlayerSBATT * 1
     PopTime_Score = player.PlayerPopTime * 0.95
     ArmVelo_Score = player.PlayerArmVelo * 0.9
     total_score = PopTime_Score + ArmVelo_Score #+ SB_ATT_Score 
