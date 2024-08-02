@@ -10,8 +10,8 @@ class ExcelData:
 
     def map_column(self, column_name):
         keyword_mappings = {
-            "PlayerFirstName": ["name", "first", "player"],
-            "PlayerLastName": ["name", "last", "player"],
+            "PlayerFirstName": ["name", "first", "player", "player"],
+            "PlayerLastName": ["name", "last", "player", "player"],
             "PlayerRanking": ["rank", "ranked"],
             "ClubCoachFirstName": ["coach", "first"],
             "ClubCoachLastName": ["coach", "last"],
@@ -39,9 +39,10 @@ class ExcelData:
             "PlayerIP": ["ip"],
             "PlayerBAA": ["baa"],
             "PlayerFastballSpeed": ["fastball", "speed"],
+            "PlayerArmVelo2": ["arm", "velo"],
             "PlayerChangeUpSpeed": ["change", "speed"],
             "PlayerPopTime": ["pop", "time"],
-            "PlayerArmVelo2": ["arm", "velo"],
+            "PlayerArmVelo": ["arm", "velo"],
             "PlayerRankingEstimate": ["rank", "estimate"],
             "PlayerAccomplishments": ["accomplishments"],
             "PlayerEventsandOpponents": ["events", "opponents"],
