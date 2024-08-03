@@ -42,7 +42,7 @@ class ExcelData:
             "PlayerArmVelo2": ["arm", "velo"],
             "PlayerChangeUpSpeed": ["change", "speed"],
             "PlayerPopTime": ["pop", "time"],
-            "PlayerArmVelo": ["arm", "velo"],
+            "PlayerArmVelo3": ["arm", "velo"],
             "PlayerRankingEstimate": ["rank", "estimate"],
             "PlayerAccomplishments": ["accomplishments"],
             "PlayerEventsandOpponents": ["events", "opponents"],
@@ -54,7 +54,7 @@ class ExcelData:
             "ParentPhone": ["parent", "phone"],
             "PlayerHometown": ["hometown", "state"],
             "PlayerQuote": ["quote"],
-            "PlayerHeadshot": ["headshot"]
+            "PlayerHeadshot": ["headshot"],
         }
 
         for standard_key, keywords in keyword_mappings.items():

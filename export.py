@@ -1,9 +1,10 @@
 import os
 import pandas as pd
+from formatter import format_excel
 
 
 def export_to_excel(players, file, attr_names):
-    ''' Should sort each position separately based on their position scores.'''
+    """Should sort each position separately based on their position scores."""
     output_directory = os.path.dirname(file)
 
     # Pitchers Stats
@@ -24,6 +25,9 @@ def export_to_excel(players, file, attr_names):
         sorted_pitchers,
         os.path.join(output_directory, "Pitchers.xlsx"),
         attr_names_copy,
+    )
+    format_excel(
+        os.path.join(output_directory, "Pitchers.xlsx"),
     )
 
     # Catchers Stats
@@ -72,7 +76,7 @@ def export_to_excel(players, file, attr_names):
 
 
 def save_to_excel(players, file_path, fieldnames):
-    ''' Saves players to excel file based on their position.'''
+    """Saves players to excel file based on their position."""
     data = [player.__dict__ for player in players]
     df = pd.DataFrame(data, columns=fieldnames)
 
