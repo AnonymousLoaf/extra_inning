@@ -13,10 +13,10 @@ def run_script(app):
     players = load_players(file)
 
     # Calculate player scores
-    # for player in players:
-        #Player.calculate_player_score(player)
-    print(players[0])
-        #print("--------------------------------------------------------------------")
+    for player in players:
+        player.calculate_player_score()
+        print(player)
+        print("--------------------------------------------------------------------")
 
     # Export to excel
     #export_to_excel(players, file, get_attr_names(file))

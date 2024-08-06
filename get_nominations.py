@@ -1,5 +1,6 @@
 import pandas as pd
 from player import Player
+import re
 
 
 class ExcelData:
@@ -28,17 +29,17 @@ class ExcelData:
             "ActionVideo": [r"\baction\b", r"\bvideo\b"],
             "Slapper": [r"\bslapper\b"],
             "PlayerPA": [r"\bpa\b"],
-            "PlayerAB": [r"\bat\b", r"\bbats\b", r"\bab\b"],
+            "PlayerAB": [r"\bat\b", r"\bbats\b"],
             "PlayerBA": [r"\bbatting\b", r"\bavg\b"],
             "PlayerOBP": [r"\bobp\b"],
             "PlayerOPS": [r"\bops\b"],
             "PlayerHits": [r"\bhits\b"],
             "PlayerDoubles": [r"\bdoubles\b"],
             "PlayerTriples": [r"\btriples\b"],
-            "PlayerHR": [r"\bhomeruns\b", r"\bhr\b"],
+            "PlayerHR": [r"\bhomeruns\b"],
             "PlayerRBI": [r"\brbi\b"],
             "PlayerStrikeOuts": [r"\bstrikeouts\b"],
-            "FieldingPerc": [r"\bfielding\b", r"\b%\b"],
+            "FieldingPerc": [r"\bfielding\b"],
             "TotalChances": [r"\btcs\b"],
             "Assist": [r"\bassists\b"],
             "Putouts": [r"\bpos\b"],
@@ -87,15 +88,11 @@ class ExcelData:
             "OrgPhone": [r"\borg\b", r"\bphone\b"],
         }
 
-        # Normalize the column name by removing spaces and converting to lowercase
-        normalized_column_name = ''.join(column_name.lower().split())
-
-        for standard_key, keywords in keyword_mappings.items():
-            # Calculate the number of keywords present
-            keyword_count = sum(keyword in normalized_column_name for keyword in keywords)
-            # Check if more than half of the keywords are present
-            if keyword_count / len(keywords) > 0.5:
+        for standard_key, patterns in keyword_mappings.items():
+            # Check if all patterns in the set match the column name
+            if all(re.search(pattern, column_name, re.IGNORECASE) for pattern in patterns):
                 return standard_key
+        # If no patterns match, return the original column name
         return column_name
 
     def make_players(self):

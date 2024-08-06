@@ -38,9 +38,8 @@ def player_batting_score(player):
     avg_score = player.PlayerBA * 1
     ops_score = player.PlayerOPS * 0.95
     obp_score = player.PlayerOBP * 0.9
-    qab_score = player.PlayerQAB * 0.85
     atbats_score = player.PlayerAB * 0.85
     strikeouts_score = player.PlayerStrikeOuts * 0.8
     hits_score = player.PlayerHits * 0.75
-    total_score = avg_score + ops_score + obp_score + qab_score + atbats_score + strikeouts_score + hits_score
+    total_score = avg_score + ops_score + obp_score + atbats_score + strikeouts_score + hits_score
     return total_score
