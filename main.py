@@ -10,16 +10,14 @@ def run_script(app):
     file = app.get_file()
 
     # Load the data
-    players = load_players(file)
+    players, attr_names = load_players(file)
 
     # Calculate player scores
     for player in players:
         player.calculate_player_score()
-        print(player)
-        print("--------------------------------------------------------------------")
 
     # Export to excel
-    #export_to_excel(players, file, get_attr_names(file))
+    export_to_excel(players, file, attr_names)
     app.finish_message()
 
 
