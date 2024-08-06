@@ -1,4 +1,3 @@
-# formatter.py
 import openpyxl
 from openpyxl.styles import PatternFill
 
@@ -17,6 +16,117 @@ def auto_adjust_column_width(sheet):
 
 
 def format_excel(file_path):
+    # Define the groups of columns
+    groups = [
+        ["PlayerFirstName", "PlayerLastName"],
+        ["Notes"],
+        ["PlayerPosition"],
+        ["ClubTeamName"],
+        ["GameChanger Name"],
+        ["PlayerPreviousRanked", "PlayerRanking"],
+        [
+            "PlayerHometown",
+            "HS",
+            "PlayerTwitter",
+            "PlayerGPA",
+            "PlayerRegion",
+            "PlayerCommitted",
+            "PlayerUniversity",
+            "ActionVideo",
+        ],
+        [
+            "Slapper",
+            "PlayerPA",
+            "PlayerAB",
+            "PlayerBA",
+            "PlayerOBP",
+            "PlayerOPS",
+            "PlayerHits",
+            "PlayerDoubles",
+            "PlayerTriples",
+            "PlayerHR",
+            "PlayerRBI",
+            "PlayerStrikeOuts",
+        ],
+        [
+            "FieldingPerc",
+            "TotalChances",
+            "Assist",
+            "Putouts",
+            "PlayerArmVelo",
+        ],
+        [
+            "PlayerERA",
+            "PlayerWHIP",
+            "PlayerKs",
+            "PlayerBB",
+            "PlayerIP",
+            "PlayerBAA",
+            "PlayerFastballSpeed",
+            "PlayerChangeUpSpeed",
+        ],
+        [
+            "PlayerPopTime",
+            "PlayerArmVelo",
+            "PlayerSB",
+            "PlayerATT",
+            "FieldingPerc",
+        ],
+        [
+            "CoachRecommend50",
+            "PlayerRankingEstimate",
+        ],
+        [
+            "PlayerAccomplishments",
+            "PlayerQuote",
+        ],
+        [
+            "Top3Org",
+            "Top Tournaments",
+        ],
+        [
+            "Else",
+        ],
+        [
+            "Parent1Name",
+            "Parent1Email",
+            "Parent1Phone",
+            "Parent2Name",
+            "Parent2Email",
+            "Parent2Phone",
+        ],
+        [
+            "Headshot",
+        ],
+        [
+            "ContactFirstName",
+            "ContactLastName",
+            "ContactEmail",
+            "ContactPhone",
+        ],
+        [
+            "NominatorName",
+            "NaminatorNameLast",
+            "NominatorEmail",
+            "NominatorPhone",
+        ],
+        [
+            "CoachNameFirst",
+            "CoachNameLast",
+            "CoachEmail",
+            "CoachPhone",
+        ],
+        [
+            "AthleteTeamPage",
+        ],
+        [
+            "OrgLeader",
+            "OrgEmail",
+            "OrgPhone",
+        ],
+    ]
+
+    # Define the colors for the groups
     colors = [
         "FFFFE0E0",  # Lite Red
         "FFFFE0B2",  # Lite Orange
@@ -30,13 +140,21 @@ def format_excel(file_path):
     workbook = openpyxl.load_workbook(file_path)
     sheet = workbook.active
 
-    for col_idx, column in enumerate(sheet.iter_cols(), start=1):
-        color = colors[(col_idx - 1) % len(colors)]
-        if (col_idx - 1) % 3 == 0:
-            fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
-            for cell in column:
-                cell.fill = fill
+    # Apply colors to the groups
+    for group_idx, group in enumerate(groups):
+        color = colors[group_idx % len(colors)]
+        fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
+
+        for col_name in group:
+            col_idx = None
+            for cell in sheet[1]:  # Assumes first row contains headers
+                if cell.value == col_name:
+                    col_idx = cell.column
+                    break
+            if col_idx is not None:
+                for cell in sheet.iter_cols(min_col=col_idx, max_col=col_idx):
+                    for single_cell in cell:
+                        single_cell.fill = fill
 
     auto_adjust_column_width(sheet)
-
     workbook.save(file_path)

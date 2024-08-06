@@ -43,6 +43,9 @@ def export_to_excel(players, file, attr_names):
         os.path.join(output_directory, "Catchers.xlsx"),
         attr_names_copy,
     )
+    format_excel(
+        os.path.join(output_directory, "Catchers.xlsx"),
+    )
 
     # Defense Stats
     attr_names_copy = attr_names.copy()
@@ -61,6 +64,9 @@ def export_to_excel(players, file, attr_names):
         os.path.join(output_directory, "Defense.xlsx"),
         attr_names_copy,
     )
+    format_excel(
+        os.path.join(output_directory, "Defense.xlsx"),
+    )
 
     # Batting Stats
     attr_names_copy = attr_names.copy()
@@ -72,6 +78,9 @@ def export_to_excel(players, file, attr_names):
     )
     save_to_excel(
         sorted_batters, os.path.join(output_directory, "Batters.xlsx"), attr_names_copy
+    )
+    format_excel(
+        os.path.join(output_directory, "Batters.xlsx"),
     )
 
 
