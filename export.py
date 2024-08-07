@@ -54,7 +54,7 @@ def export_to_excel(players, file, attr_names):
     defensive_players = [
         player
         for player in players
-        if player.PlayerPosition in ["MIF", "CIF", "Outfielder"]
+        if player.PlayerPosition in ["MIF", "CIF", "Outfielder", "Infielder"]
     ]
     sorted_defensive_players = sorted(
         defensive_players, key=lambda player: player.defensive_score, reverse=True
