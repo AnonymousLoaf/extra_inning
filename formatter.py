@@ -15,6 +15,12 @@ def auto_adjust_column_width(sheet):
         sheet.column_dimensions[column_letter].width = adjusted_width
 
 
+def set_fixed_column_width(sheet, width=14):
+    for column in sheet.columns:
+        column_letter = column[0].column_letter  # Get the column name
+        sheet.column_dimensions[column_letter].width = width
+
+
 def format_excel(file_path):
     # Define the groups of columns
     groups = [
@@ -156,5 +162,5 @@ def format_excel(file_path):
                     for single_cell in cell:
                         single_cell.fill = fill
 
-    auto_adjust_column_width(sheet)
+    set_fixed_column_width(sheet)
     workbook.save(file_path)
