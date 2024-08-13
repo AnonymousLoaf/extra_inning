@@ -96,7 +96,30 @@ class ExcelData:
     def make_players(self):
         try:
             df = pd.read_excel(self.file)
-            df.rename(columns=lambda x: self.map_column(x.strip()), inplace=True)
+
+            # Start merging process directly here
+            reverse_map = {}
+            for col in df.columns:
+                mapped_col = self.map_column(col.strip())
+                if mapped_col in reverse_map:
+                    reverse_map[mapped_col].append(col)
+                else:
+                    reverse_map[mapped_col] = [col]
+
+            # Merge columns by combining them without overwriting non-NaN values
+            for key, cols in reverse_map.items():
+                if len(cols) > 1:
+                    # Use the first column as the base and update with non-NaN values from other columns
+                    merged_col = df[cols[0]]
+                    for col in cols[1:]:
+                        merged_col = merged_col.fillna(df[col])
+                    df[key] = merged_col
+                    # Drop the original columns after merging
+                    df.drop(columns=cols, inplace=True)
+                else:
+                    # Rename the single column directly
+                    df.rename(columns={cols[0]: key}, inplace=True)
+
             self.attr_names = df.columns.tolist()
             for _, row in df.iterrows():
                 self.players.append(Player(**row.to_dict()))
