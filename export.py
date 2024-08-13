@@ -19,12 +19,15 @@ def export_to_excel(players, file, attr_names):
     # Add pitching score to atter names
     if "pitching_score" not in attr_names_copy:
         attr_names_copy.append("pitching_score")
+        attr_names_copy.append("batting_score")
+        attr_names_copy.append("pitcher_score")
 
     # Save pitchers to excel, independent from other positions
     save_to_excel(
         sorted_pitchers,
         os.path.join(output_directory, "Pitchers.xlsx"),
         attr_names_copy,
+        "pitcher_score",
     )
     format_excel(
         os.path.join(output_directory, "Pitchers.xlsx"),
@@ -34,6 +37,9 @@ def export_to_excel(players, file, attr_names):
     attr_names_copy = attr_names.copy()
     if "catching_score" not in attr_names_copy:
         attr_names_copy.append("catching_score")
+        attr_names_copy.append("batting_score")
+        attr_names_copy.append("catcher_score")
+
     catchers = [player for player in players if player.PlayerPosition == "Catcher"]
     sorted_catchers = sorted(
         catchers, key=lambda player: player.catcher_score, reverse=True
@@ -42,6 +48,7 @@ def export_to_excel(players, file, attr_names):
         sorted_catchers,
         os.path.join(output_directory, "Catchers.xlsx"),
         attr_names_copy,
+        "catcher_score",
     )
     format_excel(
         os.path.join(output_directory, "Catchers.xlsx"),
@@ -51,6 +58,9 @@ def export_to_excel(players, file, attr_names):
     attr_names_copy = attr_names.copy()
     if "defensive_score" not in attr_names_copy:
         attr_names_copy.append("defensive_score")
+        attr_names_copy.append("batting_score")
+        attr_names_copy.append("defense_score")
+
     defensive_players = [
         player
         for player in players
@@ -63,6 +73,7 @@ def export_to_excel(players, file, attr_names):
         sorted_defensive_players,
         os.path.join(output_directory, "Defense.xlsx"),
         attr_names_copy,
+        "defense_score",
     )
     format_excel(
         os.path.join(output_directory, "Defense.xlsx"),
@@ -77,27 +88,19 @@ def export_to_excel(players, file, attr_names):
         batters, key=lambda player: player.batting_score, reverse=True
     )
     save_to_excel(
-        sorted_batters, os.path.join(output_directory, "Batters.xlsx"), attr_names_copy
+        sorted_batters, os.path.join(output_directory, "Batters.xlsx"), attr_names_copy, "batting_score"
     )
     format_excel(
         os.path.join(output_directory, "Batters.xlsx"),
     )
 
 
-def save_to_excel(players, file_path, fieldnames):
+def save_to_excel(players, file_path, fieldnames, score_column):
     """Saves players to excel file based on their position."""
     data = [player.__dict__ for player in players]
     df = pd.DataFrame(data, columns=fieldnames)
 
-    # Sorting DataFrame based on the relevant score
-    score_columns = [
-        "pitching_score",
-        "catching_score",
-        "defensive_score",
-        "batting_score",
-    ]
-    for score_column in score_columns:
-        if score_column in df.columns:
-            df = df.sort_values(by=score_column, ascending=False)
+    if score_column in df.columns:
+        df = df.sort_values(by=score_column, ascending=False)
 
     df.to_excel(file_path, index=False)
