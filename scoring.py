@@ -16,8 +16,8 @@ def player_pitching_score(player):
 def player_catching_score(player):
     FieldingPerc_Score = standardize_high(player.FieldingPerc) * 0.5
     SB_Score = standardize_low(player.PlayerSB/player.PlayerATT) * 0.25
-    PopTime_Score = standardize_low(player.PopTime) * 0.1
-    ArmVelo_Score = standardize_high(player.ArmVelo) * 0.1
+    PopTime_Score = standardize_low(player.PlayerPopTime) * 0.1
+    ArmVelo_Score = standardize_high(player.PlayerArmVelo) * 0.1
     Att_Score = standardize_low(player.PlayerATT) * 0.05
     catching_score = FieldingPerc_Score + PopTime_Score + ArmVelo_Score + SB_Score + Att_Score
     return catching_score
