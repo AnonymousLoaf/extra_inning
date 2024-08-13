@@ -11,7 +11,7 @@ def export_to_excel(players, file, attr_names):
     # Get and sort the pitchers
     pitchers = [player for player in players if player.PlayerPosition == "Pitcher"]
     sorted_pitchers = sorted(
-        pitchers, key=lambda player: player.pitching_score, reverse=True
+        pitchers, key=lambda player: player.pitcher_score, reverse=True
     )
     # Save OG attr names
     attr_names_copy = attr_names.copy()
@@ -36,7 +36,7 @@ def export_to_excel(players, file, attr_names):
         attr_names_copy.append("catching_score")
     catchers = [player for player in players if player.PlayerPosition == "Catcher"]
     sorted_catchers = sorted(
-        catchers, key=lambda player: player.catching_score, reverse=True
+        catchers, key=lambda player: player.catcher_score, reverse=True
     )
     save_to_excel(
         sorted_catchers,
@@ -57,7 +57,7 @@ def export_to_excel(players, file, attr_names):
         if player.PlayerPosition in ["MIF", "CIF", "Outfielder", "Infielder"]
     ]
     sorted_defensive_players = sorted(
-        defensive_players, key=lambda player: player.defensive_score, reverse=True
+        defensive_players, key=lambda player: player.defense_score, reverse=True
     )
     save_to_excel(
         sorted_defensive_players,

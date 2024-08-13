@@ -4,42 +4,43 @@ def safe_float(value):
     except ValueError:
         return 0
 
-
-def player_defense_score(player):
-    fielding_score = player.FieldingPerc * 1
-    tc_score = player.TotalChances * 0.95
-    assists_score = player.Assist * 0.9
-    po_score = player.Putouts * 0.85
-    total_score = fielding_score + tc_score + assists_score + po_score
-    return total_score
-
-
 def player_pitching_score(player):
-    era_score = player.PlayerERA * 1
-    whip_score = player.PlayerWHIP * 0.95
-    baa_score = player.PlayerBAA * 0.9
-    ks_score = player.PlayerKs * 0.85
-    ip_score = player.PlayerIP * 0.8
-    bb_score = player.PlayerBB * 0.75
-    total_score = era_score + whip_score + baa_score + ks_score + ip_score + bb_score
-    return total_score
-
+    era_score = standardize_low(player.PlayerERA) * 0.5
+    whip_score = standardize_low(player.PlayerWHIP) * 0.3
+    baa_score = standardize_low(player.PlayerBAA) * 0.02
+    ks_score = standardize_high(player.PlayerKs / player.PlayerIP) * 0.11
+    bb_score = standardize_low(player.PlayerBB / player.PlayerIP) * 0.07
+    pitching_score = era_score + whip_score + baa_score + ks_score + bb_score
+    return pitching_score
 
 def player_catching_score(player):
-    SB_Score = player.PlayerSB * 1
-    ATT_Score = player.PlayerATT * 0.95
-    PopTime_Score = player.PlayerPopTime * 0.9
-    ArmVelo_Score = player.PlayerArmVelo * 0.85
-    total_score = PopTime_Score + ArmVelo_Score + SB_Score + ATT_Score
-    return total_score
+    FieldingPerc_Score = standardize_high(player.FieldingPerc) * 0.5
+    SB_Score = standardize_low(player.PlayerSB/player.PlayerATT) * 0.25
+    PopTime_Score = standardize_low(player.PopTime) * 0.1
+    ArmVelo_Score = standardize_high(player.ArmVelo) * 0.1
+    Att_Score = standardize_low(player.PlayerATT) * 0.05
+    catching_score = FieldingPerc_Score + PopTime_Score + ArmVelo_Score + SB_Score + Att_Score
+    return catching_score
 
+def player_defense_score(player):
+    fielding_score = standardize_high(player.FieldingPerc) * 0.60
+    tc_score = standardize_high(player.TotalChances/player.FieldingPerc) * 0.3
+    assists_score = standardize_high(player.Assist/player.TotalChances) * 0.05
+    po_score = standardize_high(player.Putouts/player.TotalChances) * 0.05
+    defense_score = fielding_score + tc_score + assists_score + po_score
+    return defense_score
 
 def player_batting_score(player):
-    avg_score = player.PlayerBA * 1
-    ops_score = player.PlayerOPS * 0.95
-    obp_score = player.PlayerOBP * 0.9
-    atbats_score = player.PlayerAB * 0.85
-    strikeouts_score = player.PlayerStrikeOuts * 0.8
-    hits_score = player.PlayerHits * 0.75
-    total_score = avg_score + ops_score + obp_score + atbats_score + strikeouts_score + hits_score
-    return total_score
+    avg_score = standardize_high(player.PlayerBA) * 0.48
+    ops_score = standardize_high(player.PlayerOPS) * 0.48
+    strikeouts_score = standardize_low(player.PlayerStrikeOuts) * 0.01
+    hits_score = standardize_high(player.PlayerHits) * 0.01
+    rbi_score = standardize_high(player.PlayerRBI) * 0.02
+    batting_score = avg_score + ops_score + strikeouts_score + hits_score + rbi_score
+    return batting_score
+
+def standardize_low(stat):
+    return 1000 / (stat + 1000)
+
+def standardize_high(stat):
+    return 1000 / (1100 - stat)

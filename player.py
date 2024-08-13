@@ -13,6 +13,9 @@ class Player:
         self.catching_score = 0
         self.defensive_score = 0
         self.batting_score = 0
+        self.pitcher_score = 0
+        self.catcher_score = 0
+        self.defense_score = 0
 
     def __repr__(self):
         return "\n".join([f"{key}: {value}" for key, value in self.__dict__.items()])
@@ -25,3 +28,6 @@ class Player:
         self.catching_score = player_catching_score(self)
         self.defensive_score = player_defense_score(self)
         self.batting_score = player_batting_score(self)
+        self.pitcher_score = (self.pitching_score * 0.65) + (self.batting_score * 0.35)
+        self.catcher_score = (self.catching_score * 0.6) + (self.batting_score * 0.4)
+        self.defense_score = (self.defensive_score * 0.65) + (self.batting_score * 0.35)
