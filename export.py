@@ -54,29 +54,54 @@ def export_to_excel(players, file, attr_names):
         os.path.join(output_directory, "Catchers.xlsx"),
     )
 
-    # Defense Stats
+    # Infielder Stats
     attr_names_copy = attr_names.copy()
-    if "defensive_score" not in attr_names_copy:
-        attr_names_copy.append("defensive_score")
+    if "infield_score" not in attr_names_copy:
+        attr_names_copy.append("infield_score")
         attr_names_copy.append("batting_score")
         attr_names_copy.append("defense_score")
 
     defensive_players = [
         player
         for player in players
-        if player.PlayerPosition in ["MIF", "CIF", "Outfielder", "Infielder"]
+        if player.PlayerPosition in ["Infielder"]
     ]
     sorted_defensive_players = sorted(
-        defensive_players, key=lambda player: player.defense_score, reverse=True
+        defensive_players, key=lambda player: player.infield_score, reverse=True
     )
     save_to_excel(
         sorted_defensive_players,
-        os.path.join(output_directory, "Defense.xlsx"),
+        os.path.join(output_directory, "Infielders.xlsx"),
         attr_names_copy,
-        "defense_score",
+        "infielder_score",
     )
     format_excel(
-        os.path.join(output_directory, "Defense.xlsx"),
+        os.path.join(output_directory, "Infielders.xlsx"),
+    )
+
+    # outfield Stats
+    attr_names_copy = attr_names.copy()
+    if "outfield_score" not in attr_names_copy:
+        attr_names_copy.append("outfield_score")
+        attr_names_copy.append("batting_score")
+        attr_names_copy.append("defense_score")
+
+    defensive_players = [
+        player
+        for player in players
+        if player.PlayerPosition in ["Outfielder"]
+    ]
+    sorted_defensive_players = sorted(
+        defensive_players, key=lambda player: player.outfield_score, reverse=True
+    )
+    save_to_excel(
+        sorted_defensive_players,
+        os.path.join(output_directory, "Outfielder.xlsx"),
+        attr_names_copy,
+        "outfield_score",
+    )
+    format_excel(
+        os.path.join(output_directory, "Outfielder.xlsx"),
     )
 
     # Batting Stats

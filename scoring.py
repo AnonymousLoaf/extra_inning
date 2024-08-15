@@ -26,21 +26,23 @@ def player_catching_score(player):
 
 
 def player_defense_score(player):
-    fielding_score = standardize_high(player.FieldingPerc) * 0.60
-    tc_score = standardize_high(player.TotalChances/player.FieldingPerc) * 0.3
-    assists_score = standardize_high(player.Assist/player.TotalChances) * 0.05
-    po_score = standardize_high(player.Putouts/player.TotalChances) * 0.05
+    fielding_score = standardize_high(player.FieldingPerc) * 0.62
+    tc_score = standardize_high(player.TotalChances/player.FieldingPerc) * 0.34
+    assists_score = standardize_high(player.Assist/player.TotalChances) * 0.02
+    po_score = standardize_high(player.Putouts/player.TotalChances) * 0.02
     defense_score = fielding_score + tc_score + assists_score + po_score
     return defense_score
 
 
 def player_batting_score(player):
-    avg_score = standardize_high(player.PlayerBA) * 0.48
-    ops_score = standardize_high(player.PlayerOPS) * 0.48
+    avg_score = standardize_high(player.PlayerBA) * 0.40
+    ops_score = standardize_high(player.PlayerOPS) * 0.40
+    obp_score = standardize_high(player.PlayerOBP) * 0.10
+    rbi_score = standardize_high(player.PlayerRBI) * 0.08
     strikeouts_score = standardize_low(player.PlayerStrikeOuts) * 0.01
     hits_score = standardize_high(player.PlayerHits) * 0.01
-    rbi_score = standardize_high(player.PlayerRBI) * 0.02
-    batting_score = avg_score + ops_score + strikeouts_score + hits_score + rbi_score
+    
+    batting_score = avg_score + ops_score + obp_score + strikeouts_score + hits_score + rbi_score
     return batting_score
 
 
