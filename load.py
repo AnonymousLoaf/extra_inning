@@ -4,6 +4,7 @@ from get_nominations import ExcelData
 def load_players(file):
     data = ExcelData(file)
     data.make_players()
+    data.check_players()
     players = data.players
     return players, data.attr_names
 
