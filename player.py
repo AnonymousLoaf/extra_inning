@@ -17,6 +17,7 @@ class Player:
         self.catcher_score = 0
         self.infield_score = 0
         self.outfield_score = 0
+        self.is_red_flag = []
 
     def __repr__(self):
         return "\n".join([f"{key}: {value}" for key, value in self.__dict__.items()])

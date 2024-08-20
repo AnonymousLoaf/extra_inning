@@ -59,7 +59,6 @@ def export_to_excel(players, file, attr_names):
     if "infield_score" not in attr_names_copy:
         attr_names_copy.append("infield_score")
         attr_names_copy.append("batting_score")
-        attr_names_copy.append("defense_score")
 
     defensive_players = [
         player
@@ -84,7 +83,6 @@ def export_to_excel(players, file, attr_names):
     if "outfield_score" not in attr_names_copy:
         attr_names_copy.append("outfield_score")
         attr_names_copy.append("batting_score")
-        attr_names_copy.append("defense_score")
 
     defensive_players = [
         player
@@ -117,6 +115,18 @@ def export_to_excel(players, file, attr_names):
     )
     format_excel(
         os.path.join(output_directory, "Batters.xlsx"),
+    )
+
+    # Red Flags
+    attr_names_copy = attr_names.copy()
+    if "is_red_flag" not in attr_names_copy:
+        attr_names_copy.insert(0, "is_red_flag")
+    red_flags = [player for player in players if player.is_red_flag]
+    save_to_excel(
+        red_flags, os.path.join(output_directory, "RedFlags.xlsx"), attr_names_copy, "is_red_flag"
+    )
+    format_excel(
+        os.path.join(output_directory, "RedFlags.xlsx"),
     )
 
 

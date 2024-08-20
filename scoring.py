@@ -46,8 +46,16 @@ def player_batting_score(player):
 
 
 def standardize_low(stat):
+    if stat == 0:
+        return 0
+    elif stat <= 1:
+        return stat
     return 1000 / (stat + 1000)
 
 
 def standardize_high(stat):
+    if stat == 0:
+        return 0
+    elif stat <= 1:
+        return stat
     return 1000 / (1100 - stat)

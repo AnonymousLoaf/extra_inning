@@ -128,6 +128,30 @@ class ExcelData:
         except Exception as e:
             print(f"Error loading players: {e}")
 
+
+    def check_players(self):
+        gen_threshold = {
+            "PlayerBA": (0.25, 1),
+            "PlayerOPS": (0.7, None),
+            "PlayerOBP": (0.3, 1),
+            "PlayerAB": (50, None),
+            "PlayerStrikeOuts": (0, None),
+            "PlayerHits": (30, None),
+            "PlayerPA": (75, None),
+            "PlayerRBI": (8, None),
+            "PlayerERA": (None, 3.2),
+            "PlayerIP": (50, None),
+            "FieldingPerc": (0.955, 1),
+            "PlayerArmVelo": (0, None),
+        }
+
+        for player in self.players:
+            for stat, (min_val, max_val) in gen_threshold.items():
+                stat_value = getattr(player, stat)
+                if (min_val is not None and stat_value < min_val) or (max_val is not None and stat_value > max_val):
+                    player.is_red_flag.append(stat)
+
+
     def get(self, name):
         for player in self.players:
             full_name = player.PlayerFirstName + " " + player.PlayerLastName
