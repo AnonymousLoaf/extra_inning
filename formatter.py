@@ -143,13 +143,30 @@ def format_excel(file_path):
         "FFFFE0FF",  # Lite Purple
     ]
 
+    # Define the colors for the headers
+    header_colors = [
+        "FFB1B1",  # Red
+        "FFD292",  # Orange
+        "FFFFB1",  # Yellow
+        "BBFFBB",  # Green
+        "AEFFFF",  # Cyan
+        "B1B1FF",  # Blue
+        "FFB1FF",  # Purple
+    ]
+
     workbook = openpyxl.load_workbook(file_path)
     sheet = workbook.active
 
-    # Apply colors to the groups
+    # Apply colors to the groups and the header row
     for group_idx, group in enumerate(groups):
         color = colors[group_idx % len(colors)]
         fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
+
+        # Apply the specified header color
+        header_color = header_colors[group_idx % len(header_colors)]
+        header_fill = PatternFill(
+            start_color=header_color, end_color=header_color, fill_type="solid"
+        )
 
         for col_name in group:
             col_idx = None
@@ -158,7 +175,13 @@ def format_excel(file_path):
                     col_idx = cell.column
                     break
             if col_idx is not None:
-                for cell in sheet.iter_cols(min_col=col_idx, max_col=col_idx):
+                # Apply the specified header color to the header cell
+                sheet.cell(row=1, column=col_idx).fill = header_fill
+
+                # Apply the regular color to the rest of the cells in the column
+                for cell in sheet.iter_cols(
+                    min_col=col_idx, max_col=col_idx, min_row=2
+                ):
                     for single_cell in cell:
                         single_cell.fill = fill
 
