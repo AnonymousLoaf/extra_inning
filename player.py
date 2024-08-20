@@ -31,5 +31,5 @@ class Player:
         self.batting_score = player_batting_score(self)
         self.pitcher_score = (self.pitching_score * 0.90) + (self.batting_score * 0.10)
         self.catcher_score = (self.catching_score * 0.6) + (self.batting_score * 0.4)
-        self.infield_score = (self.infield_score * 0.55) + (self.batting_score * 0.45)
-        self.outfield_score = (self.outfield_score * 0.40) + (self.batting_score * 0.60)
+        self.infield_score = (self.defensive_score * 0.6) + (self.batting_score * 0.4)
+        self.outfield_score = (self.defensive_score * 0.40) + (self.batting_score * 0.60)
