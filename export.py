@@ -13,6 +13,14 @@ def export_to_excel(players, file, attr_names):
     sorted_pitchers = sorted(
         pitchers, key=lambda player: player.pitcher_score, reverse=True
     )
+
+    if "FieldingPerc" in attr_names:
+        attr_names.remove("FieldingPerc")
+        attr_names.insert(42, "FieldingPerc")
+    if "PlayerArmVelo" in attr_names:
+        attr_names.remove("PlayerArmVelo")
+        attr_names.insert(40, "PlayerArmVelo")
+
     # Save OG attr names
     attr_names_copy = attr_names.copy()
 
