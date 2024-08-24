@@ -147,9 +147,23 @@ class ExcelData:
 
         for player in self.players:
             for stat, (min_val, max_val) in gen_threshold.items():
-                stat_value = getattr(player, stat)
-                if (min_val is not None and stat_value < min_val) or (max_val is not None and stat_value > max_val):
-                    player.is_red_flag.append(stat)
+                try:
+                    stat_value = getattr(player, stat)
+                    if stat_value is not None:
+                        # Attempt to convert stat_value to a float for comparison
+                        try:
+                            stat_value = float(stat_value)
+                        except ValueError:
+                            continue  # Skip if stat_value cannot be converted to a float
+                        
+                        if min_val is not None and stat_value < min_val:
+                            player.is_red_flag.append(stat)
+                        if max_val is not None and stat_value > max_val:
+                            player.is_red_flag.append(stat)
+                except AttributeError:
+                    pass
+
+
 
 
     def get(self, name):
