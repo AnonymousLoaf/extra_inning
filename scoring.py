@@ -1,10 +1,3 @@
-def safe_float(value):
-    try:
-        return float(value)
-    except ValueError:
-        return 0
-
-
 def player_pitching_score(player, error_list):
     # Check if the player is a pitcher
     if player.PlayerPosition != "Pitcher":
@@ -18,44 +11,22 @@ def player_pitching_score(player, error_list):
         attr for attr in required_attributes
         if not hasattr(player, attr)
     ]
-    
+
     # Append errors for missing attributes
     for attr in missing_attrs:
-        error_list.append(f"Cannot rank {player.PlayerFirstName} {player.PlayerLastName} Invalid value in: {attr}")
+        error_list.append(f"Cannot rank {player.PlayerFirstName} {player.PlayerLastName}. Invalid value in: {attr}")
 
     # If any attributes are missing, return an error score or handle as needed
     if missing_attrs:
         return 0
 
-    # Calculate each component of the pitching score safely
-    try:
-        era_score = standardize_low(float(player.PlayerERA)) * 0.5
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid ERA: {player.PlayerERA}")
-        era_score = 0
-    try:
-        whip_score = standardize_low(float(player.PlayerWHIP)) * 0.3
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid WHIP: {player.PlayerWHIP}")
-        whip_score = 0
-    try:
-        baa_score = standardize_low(float(player.PlayerBAA)) * 0.02
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid BAA: {player.PlayerBAA}")
-        baa_score = 0
-    try:
-        ks_score = standardize_high(float(player.PlayerKs) / float(player.PlayerIP)) * 0.11
-    except ZeroDivisionError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} cannot divide by zero: Player IP: {player.PlayerIP}")
-        ks_score = 0
-    try:
-        bb_score = standardize_low(float(player.PlayerBB) / float(player.PlayerIP)) * 0.07
-    except ZeroDivisionError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} cannot divide by zero: Player IP: {player.PlayerIP}")
-        bb_score = 0
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid BB: {player.PlayerBB}")
-        bb_score = 0
+    # Calculate each component of the pitching score
+    era_score = validate_and_standardize('PlayerERA', player, standardize_low, error_list) * 0.5
+    whip_score = validate_and_standardize('PlayerWHIP', player, standardize_low, error_list) * 0.3
+    ks_score = validate_and_standardize('PlayerKs', player, standardize_high, error_list, low=False, divisor='PlayerIP') * 0.11
+    bb_score = validate_and_standardize('PlayerBB', player, standardize_low, error_list, divisor='PlayerIP') * 0.07
+    baa_score = validate_and_standardize('PlayerBAA', player, standardize_low, error_list) * 0.02
+
     pitching_score = era_score + whip_score + baa_score + ks_score + bb_score
     return pitching_score
 
@@ -76,36 +47,17 @@ def player_catching_score(player, error_list):
     
     # Append errors for missing attributes
     for attr in missing_attrs:
-        error_list.append(f"Cannot rank {player.PlayerFirstName} {player.PlayerLastName} Invalid value in: {attr}")
+        error_list.append(f"Cannot rank {player.PlayerFirstName} {player.PlayerLastName}. Invalid value in: {attr}")
 
     # If any attributes are missing, return an error score or handle as needed
     if missing_attrs:
         return 0
 
     # Calculate each component of the catching score
-    try:
-        fielding_perc_score = standardize_high(float(player.FieldingPerc)) * 0.6
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid Fielding Percentage: {player.FieldingPerc}")
-        fielding_perc_score = 0
-    try:
-        sb_score = standardize_low(float(player.PlayerSB) / float(player.PlayerATT)) * 0.25
-    except ZeroDivisionError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} cannot divide by zero: Player ATT: {player.PlayerATT}")
-        sb_score = 0
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid SB: {player.PlayerSB}")
-        sb_score = 0
-    try:
-        arm_velo_score = standardize_high(float(player.PlayerArmVelo)) * 0.1
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid Arm Velocity: {player.PlayerArmVelo}")
-        arm_velo_score = 0
-    try:
-        att_score = standardize_low(float(player.PlayerATT)) * 0.05
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid ATT: {player.PlayerATT}")
-        att_score = 0
+    fielding_perc_score = validate_and_standardize('FieldingPerc', player, standardize_high, error_list) * 0.6
+    sb_score = validate_and_standardize('PlayerSB', player, standardize_low, error_list, divisor='PlayerATT') * 0.25
+    arm_velo_score = validate_and_standardize('PlayerArmVelo', player, standardize_high, error_list) * 0.1
+    att_score = validate_and_standardize('PlayerATT', player, standardize_low, error_list) * 0.05
 
     catching_score = fielding_perc_score + arm_velo_score + sb_score + att_score
     return catching_score
@@ -121,59 +73,24 @@ def player_defense_score(player, error_list):
     
     # Append errors for missing attributes
     for attr in missing_attrs:
-        error_list.append(f"Cannot rank {player.PlayerFirstName} {player.PlayerLastName} Invalid value in: {attr}")
+        error_list.append(f"Cannot rank {player.PlayerFirstName} {player.PlayerLastName}. Invalid value in: {attr}")
 
     # If any attributes are missing, return an error score or handle as needed
     if missing_attrs:
         return 0
 
-    # Convert all attributes to float
-    try:
-        fielding_perc = float(player.FieldingPerc)
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid Fielding Percentage: {player.FieldingPerc}")
-        fielding_perc = 0
-    try:
-        total_chances = float(player.TotalChances)
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid Total Chances: {player.Total_Chances}")
-        total_chances = 0
-    try:
-        assists = float(player.Assist)
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid Assists: {player.Assist}")
-        assists = 0
-    try:
-        putouts = float(player.Putouts)
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid Putouts: {player.Putouts}")
-        putouts = 0
-
     # Calculate each component of the defensive score
-    fielding_score = standardize_high(fielding_perc) * 0.76
-    try:
-        tc_score = standardize_high(total_chances / fielding_perc) * 0.2
-    except ZeroDivisionError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} cannot divide by zero: Fielding Percentage: {fielding_perc}")
-        tc_score = 0  # or an appropriate error value
+    fielding_score = validate_and_standardize('FieldingPerc', player, standardize_high, error_list) * 0.76
 
-    try:
-        assists_score = standardize_high(assists / total_chances) * 0.02
-    except ZeroDivisionError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} cannot divide by zero: Player Total Chances: {total_chances}")
-        assists_score = 0  # or an appropriate error value
-
-    try:
-        po_score = standardize_high(putouts / total_chances) * 0.02
-    except ZeroDivisionError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} cannot divide by zero: Player Total Chances: {total_chances}")
-        po_score = 0  # or an appropriate error value
+    # For ratios involving TotalChances, handle potential division by zero
+    tc_score = validate_and_standardize('TotalChances', player, standardize_high, error_list, divisor='FieldingPerc') * 0.2
+    assists_score = validate_and_standardize('Assist', player, standardize_high, error_list, divisor='TotalChances') * 0.02
+    po_score = validate_and_standardize('Putouts', player, standardize_high, error_list, divisor='TotalChances') * 0.02
 
     # Calculate the total defensive score
     defense_score = fielding_score + tc_score + assists_score + po_score
     
     return defense_score
-
 
 def player_batting_score(player, error_list):
     # Check for all necessary attributes before proceeding
@@ -187,43 +104,19 @@ def player_batting_score(player, error_list):
     
     # Append errors for missing attributes
     for attr in missing_attrs:
-        error_list.append(f"Cannot rank {player.PlayerFirstName} {player.PlayerLastName} Invalid value in: {attr}")
+        error_list.append(f"Cannot rank {player.PlayerFirstName} {player.PlayerLastName}. Invalid value in: {attr}")
     
     # If any attributes are missing, return an error score or handle as needed
     if missing_attrs:
         return 0
 
     # Calculate each component of the batting score
-    try:
-        avg_score = standardize_high(float(player.PlayerBA)) * 0.3
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid Batting Average: {player.PlayerBA}")
-        avg_score = 0
-    try:
-        ops_score = standardize_high(float(player.PlayerOPS)) * 0.3
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid OPS: {player.PlayerOPS}")
-        ops_score = 0
-    try:
-        obp_score = standardize_high(float(player.PlayerOBP)) * 0.3
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid OBP: {player.PlayerOBP}")
-        obp_score = 0
-    try:
-        rbi_score = standardize_high(float(player.PlayerRBI)) * 0.08
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid RBI: {player.PlayerRBI}")
-        rbi_score = 0
-    try:
-        strikeouts_score = standardize_low(float(player.PlayerStrikeOuts)) * 0.01
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid Strikeouts: {player.PlayerStrikeOuts}")
-        strikeouts_score = 0
-    try:
-        hits_score = standardize_high(float(player.PlayerHits)) * 0.01
-    except ValueError:
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid Hits: {player.PlayerHits}")
-        hits_score = 0
+    avg_score = validate_and_standardize('PlayerBA', player, standardize_high, error_list) * 0.3
+    ops_score = validate_and_standardize('PlayerOPS', player, standardize_high, error_list) * 0.3
+    obp_score = validate_and_standardize('PlayerOBP', player, standardize_high, error_list) * 0.3
+    rbi_score = validate_and_standardize('PlayerRBI', player, standardize_high, error_list) * 0.08
+    strikeouts_score = validate_and_standardize('PlayerStrikeOuts', player, standardize_low, error_list) * 0.01
+    hits_score = validate_and_standardize('PlayerHits', player, standardize_high, error_list) * 0.01
 
     # Calculate the total batting score
     batting_score = avg_score + ops_score + obp_score + rbi_score + strikeouts_score + hits_score
@@ -246,3 +139,16 @@ def standardize_high(stat):
     elif stat <= 1:
         return stat
     return 1000 / (1100 - stat)
+
+def validate_and_standardize(attr_name, player, standardize_func, error_list, low=True, divisor=None):
+    try:
+        value = float(getattr(player, attr_name))
+        if divisor:
+            divisor_value = float(getattr(player, divisor))
+            if divisor_value == 0:
+                raise ZeroDivisionError
+            value /= divisor_value
+        return standardize_func(value) if low else standardize_func(value)
+    except (ValueError, AttributeError, ZeroDivisionError):
+        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid {attr_name}: {getattr(player, attr_name)}")
+        return 0

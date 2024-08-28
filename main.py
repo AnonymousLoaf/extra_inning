@@ -17,6 +17,11 @@ def run_script(app):
         if player.error_list:
             print("\n".join(player.error_list))
 
+    #Debugging
+    # for player in players:
+    #     if player.PlayerPosition == "Pitcher":
+    #         print(f'Player: {player.PlayerFirstName} ERA: {player.PlayerERA} WHIP: {player.PlayerWHIP} Ks: {player.PlayerKs} BB: {player.PlayerBB} BAA: {player.PlayerBAA}')
+
     # Export to excel
     export_to_excel(players, file, attr_names)
     app.finish_message()
