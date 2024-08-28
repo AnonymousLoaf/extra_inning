@@ -11,7 +11,7 @@ def export_to_excel(players, file, attr_names):
     # Get and sort the pitchers
     pitchers = [player for player in players if player.PlayerPosition == "Pitcher"]
     sorted_pitchers = sorted(
-        pitchers, key=lambda player: player.pitcher_score, reverse=True
+        pitchers, key=lambda player: player.pitching_score, reverse=True
     )
 
     if "FieldingPerc" in attr_names:
@@ -35,7 +35,7 @@ def export_to_excel(players, file, attr_names):
         sorted_pitchers,
         os.path.join(output_directory, "Pitchers.xlsx"),
         attr_names_copy,
-        "pitcher_score",
+        "pitching_score",
     )
     format_excel(
         os.path.join(output_directory, "Pitchers.xlsx"),

@@ -124,21 +124,14 @@ def player_batting_score(player, error_list):
     return batting_score
 
 
-
 def standardize_low(stat):
     if stat == 0:
         return 0
-    elif stat <= 1:
-        return stat
-    return 1000 / (stat + 1000)
+    return 1 / (1 + stat)
 
 
 def standardize_high(stat):
-    if stat == 0:
-        return 0
-    elif stat <= 1:
-        return stat
-    return 1000 / (1100 - stat)
+    return stat / (1 + stat)
 
 def validate_and_standardize(attr_name, player, standardize_func, error_list, low=True, divisor=None):
     try:
