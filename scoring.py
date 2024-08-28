@@ -14,7 +14,7 @@ def player_pitching_score(player, error_list):
 
     # Append errors for missing attributes
     for attr in missing_attrs:
-        error_list.append(f"Cannot rank {player.PlayerFirstName} {player.PlayerLastName}. Invalid value in: {attr}")
+        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} is missing {attr}")
 
     # If any attributes are missing, return an error score or handle as needed
     if missing_attrs:
@@ -47,7 +47,7 @@ def player_catching_score(player, error_list):
     
     # Append errors for missing attributes
     for attr in missing_attrs:
-        error_list.append(f"Cannot rank {player.PlayerFirstName} {player.PlayerLastName}. Invalid value in: {attr}")
+        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} is missing {attr}")
 
     # If any attributes are missing, return an error score or handle as needed
     if missing_attrs:
@@ -73,7 +73,7 @@ def player_defense_score(player, error_list):
     
     # Append errors for missing attributes
     for attr in missing_attrs:
-        error_list.append(f"Cannot rank {player.PlayerFirstName} {player.PlayerLastName}. Invalid value in: {attr}")
+        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} is missing {attr}")
 
     # If any attributes are missing, return an error score or handle as needed
     if missing_attrs:
@@ -104,7 +104,7 @@ def player_batting_score(player, error_list):
     
     # Append errors for missing attributes
     for attr in missing_attrs:
-        error_list.append(f"Cannot rank {player.PlayerFirstName} {player.PlayerLastName}. Invalid value in: {attr}")
+        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} is missing {attr}")
     
     # If any attributes are missing, return an error score or handle as needed
     if missing_attrs:
