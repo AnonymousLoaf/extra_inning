@@ -142,7 +142,7 @@ def validate_and_standardize(attr_name, player, standardize_func, error_list, lo
             divisor_value = float(getattr(player, divisor))
             # Skip division if divisor is zero, possibly log or handle it appropriately
             if divisor_value == 0:
-                error_list.append(f"Cannot calculate {attr_name} Score for {player.PlayerFirstName} {player.PlayerLastName} as {divisor} is zero")
+                error_list.append(f"Warning: {player.PlayerFirstName} {player.PlayerLastName} in {player.PlayerPosition}: {divisor} is zero")
                 return 0
             value /= divisor_value
         return standardize_func(value) if low else standardize_func(value)
