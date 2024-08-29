@@ -1,3 +1,5 @@
+import pandas as pd
+
 def player_pitching_score(player, error_list):
     # Check if the player is a pitcher
     if player.PlayerPosition != "Pitcher":
@@ -138,10 +140,12 @@ def validate_and_standardize(attr_name, player, standardize_func, error_list, lo
         value = float(getattr(player, attr_name))
         if divisor:
             divisor_value = float(getattr(player, divisor))
+            # Skip division if divisor is zero, possibly log or handle it appropriately
             if divisor_value == 0:
-                raise ZeroDivisionError
+                error_list.append(f"Cannot calculate {attr_name} Score for {player.PlayerFirstName} {player.PlayerLastName} as {divisor} is zero")
+                return 0
             value /= divisor_value
         return standardize_func(value) if low else standardize_func(value)
-    except (ValueError, AttributeError, ZeroDivisionError):
-        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid {attr_name}: {getattr(player, attr_name)}")
+    except (ValueError, AttributeError) as e:
+        error_list.append(f"{player.PlayerFirstName} {player.PlayerLastName} has invalid {attr_name}: {getattr(player, attr_name, 'Unknown')}")
         return 0
