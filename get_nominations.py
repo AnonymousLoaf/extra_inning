@@ -26,7 +26,8 @@ class ExcelData:
             "x": [r"\bx\b"],
             "PlayerGPA": [r"\bgpa\b"],
             "PlayerRegion": [r"\bregion\b"],
-            "PlayerCommitted": [r"\bcommitted\b"],
+            "PlayerCommitted": [r"\bcommitted\?\b"],
+            "PlayerCommittedTo": [r"\bcommitted\b", r"\bto\b"],
             "PlayerUniversity": [r"\buniversity\b"],
             "ActionVideo": [r"\baction\b", r"\bvideo\b"],
             # Hitting stats
@@ -84,7 +85,7 @@ class ExcelData:
             "CoachEmail": [r"\bcoach\b", r"\bemail\b"],
             "CoachPhone": [r"\bcoach\b", r"\bphone\b"],
             "ClubTeamName": [r"\bteam\b", r"\bname\b"],
-            "GameChangerName": [r"\bgame\b", r"\bchanger\b"],
+            "GameChangerName": [r"\bgamechanger\b"],
             "AthletesGoLiveName": [r"\bathletes\b", r"\bgo\b", r"\blive\b"],
             "OrgLeaderFirstName": [r"\borg\b", r"\bleader\b", r"\bfirst\b", r"\bname\b"],
             "OrgLeaderLastName": [r"\borg\b", r"\bleader\b", r"\blast\b", r"\bname\b"],

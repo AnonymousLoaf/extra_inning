@@ -38,6 +38,9 @@ def format_excel(file_path):
             "PlayerCommitted",
             "PlayerUniversity",
             "ActionVideo",
+            "Committed?",
+            "PlayerCommittedTo",
+            "PlayerCommitted"
         ],
         ["PlayerFirstName", "PlayerLastName"],
         ["Notes"],

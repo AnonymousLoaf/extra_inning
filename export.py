@@ -3,143 +3,174 @@ import pandas as pd
 from formatter import format_excel
 
 
-def export_to_excel(players, file, attr_names):
+def export_to_excel(players, file, selected_options):
     """Should sort each position separately based on their position scores."""
     output_directory = os.path.dirname(file)
 
+    fieldnames = [
+    "is_red_flag", "LastYearRank", "RankedThisYear", "WhereToRankRegionallyCoach", "WhereToRankNationallyCoach",
+    "PrefferedRecomendation", "Done", "Notes", "PlayerFirstName", "PlayerLastName", 
+    "RankedPrevious", "PlayerHometown", "PlayerHighSchool", "x", "PlayerGPA", 
+    "PlayerRegion", "PlayerCommitted", "PlayerCommittedTo", "ActionVideo",
+    "Slapper", "PlayerPA", "PlayerAB", "PlayerBA", "PlayerOBP", "PlayerOPS", 
+    "PlayerHits", "PlayerDoubles", "PlayerTriples", "PlayerHR", "PlayerRBI", 
+    "PlayerStrikeOuts", "PlayerPosition", "FieldingPerc", "TotalChances", "Assist",
+    "Putouts", "PlayerArmVelo", "PlayerERA", "PlayerWHIP", "PlayerKs", 
+    "PlayerBB", "PlayerIP", "PlayerBAA", "PlayerFastballSpeed", "PlayerChangeUpSpeed", 
+    "PlayerPopTime", "PlayerSB", "PlayerATT", "PlayerAccomplishments", "CoachQuote", 
+    "PlayersRecOutsideOrg", "TopTournaments", "WhatElse", "ParentFirstName", "ParentLastName", 
+    "ParentEmail", "ParentPhone", "Headshot", "ContactFirstName", "ContactLastName", 
+    "ContactEmail", "ContactPhone", "NominatorFirstName", "NominatorLastName", 
+    "NominatorEmail", "NominatorPhone", "CoachNameFirst", "CoachNameLast", 
+    "CoachEmail", "CoachPhone", "ClubTeamName", "GameChangerName", "AthletesGoLiveName", 
+    "OrgLeaderFirstName", "OrgLeaderLastName", "OrgEmail", "OrgPhone"
+    ]
+
     # Pitchers Stats
-    # Get and sort the pitchers
-    pitchers = [player for player in players if player.PlayerPosition == "Pitcher"]
-    sorted_pitchers = sorted(
-        pitchers, key=lambda player: player.pitching_score, reverse=True
-    )
-
-    if "FieldingPerc" in attr_names:
-        attr_names.remove("FieldingPerc")
-        attr_names.insert(42, "FieldingPerc")
-    if "PlayerArmVelo" in attr_names:
-        attr_names.remove("PlayerArmVelo")
-        attr_names.insert(40, "PlayerArmVelo")
-
-    # Save OG attr names
-    attr_names_copy = attr_names.copy()
-
-    # Add pitching score to atter names
-    attr_names_copy.insert(0, "is_red_flag")
-    attr_names_copy.append("pitching_score")
-    attr_names_copy.append("batting_score")
-    attr_names_copy.append("pitcher_score")
-
-    # Save pitchers to excel, independent from other positions
-    save_to_excel(
-        sorted_pitchers,
-        os.path.join(output_directory, "Pitchers.xlsx"),
-        attr_names_copy,
-        "pitching_score",
-    )
-    format_excel(
-        os.path.join(output_directory, "Pitchers.xlsx"),
-    )
+    if selected_options["pitchers"]:
+        pitch_fieldnames = fieldnames.copy()
+        pitchers = [player for player in players if player.PlayerPosition == "Pitcher"]
+        sorted_pitchers = sorted(
+            pitchers, key=lambda player: player.pitching_score, reverse=True
+        )
+        # Add pitching score to atter names
+        if "pitching_score" not in pitch_fieldnames:
+            pitch_fieldnames.append("pitching_score")
+        if "batting_score" not in pitch_fieldnames:
+            pitch_fieldnames.append("batting_score")
+        if "pitcher_score" not in pitch_fieldnames:
+            pitch_fieldnames.append("pitcher_score")
+        # Save pitchers to excel, independent from other positions
+        save_to_excel(
+            sorted_pitchers,
+            os.path.join(output_directory, "Pitchers.xlsx"),
+            pitch_fieldnames,
+            "pitching_score",
+        )
+        format_excel(
+            os.path.join(output_directory, "Pitchers.xlsx"),
+        )
 
     # Catchers Stats
-    attr_names_copy = attr_names.copy()
-    attr_names_copy.insert(0, "is_red_flag")
-    attr_names_copy.append("catching_score")
-    attr_names_copy.append("batting_score")
-    attr_names_copy.append("catcher_score")
+    if selected_options["catchers"]:
+        catch_fieldnames = fieldnames.copy()
+        if "catching_score" not in catch_fieldnames:
+            catch_fieldnames.append("catching_score")
+        if "batting_score" not in catch_fieldnames:
+            catch_fieldnames.append("batting_score")
+        if "catcher_score" not in catch_fieldnames:
+            catch_fieldnames.append("catcher_score")
 
-    catchers = [player for player in players if player.PlayerPosition == "Catcher"]
-    sorted_catchers = sorted(
-        catchers, key=lambda player: player.catcher_score, reverse=True
-    )
-    save_to_excel(
-        sorted_catchers,
-        os.path.join(output_directory, "Catchers.xlsx"),
-        attr_names_copy,
-        "catcher_score",
-    )
-    format_excel(
-        os.path.join(output_directory, "Catchers.xlsx"),
-    )
+        catchers = [player for player in players if player.PlayerPosition == "Catcher"]
+        sorted_catchers = sorted(
+            catchers, key=lambda player: player.catcher_score, reverse=True
+        )
+        save_to_excel(
+            sorted_catchers,
+            os.path.join(output_directory, "Catchers.xlsx"),
+            catch_fieldnames,
+            "catcher_score",
+        )
+        format_excel(
+            os.path.join(output_directory, "Catchers.xlsx"),
+        )
 
     # Infielder Stats
-    attr_names_copy = attr_names.copy()
-    attr_names_copy.insert(0, "is_red_flag")
-    attr_names_copy.append("infield_score")
-    attr_names_copy.append("batting_score")
+    if selected_options["infield"]:
+        infield_fieldnames = fieldnames.copy()
+        if "infield_score" not in infield_fieldnames:
+            infield_fieldnames.append("infield_score")
+        if "batting_score" not in infield_fieldnames:
+            infield_fieldnames.append("batting_score")
 
-    defensive_players = [
-        player
-        for player in players
-        if player.PlayerPosition in ["Infielder", "IF", "1B", "2B", "3B", "SS", "CIF", "MIF"]
-    ]
-    sorted_defensive_players = sorted(
-        defensive_players, key=lambda player: player.infield_score, reverse=True
-    )
-    save_to_excel(
-        sorted_defensive_players,
-        os.path.join(output_directory, "Infielders.xlsx"),
-        attr_names_copy,
-        "infielder_score",
-    )
-    format_excel(
-        os.path.join(output_directory, "Infielders.xlsx"),
-    )
+        defensive_players = [
+            player
+            for player in players
+            if player.PlayerPosition in ["Infielder", "IF", "1B", "2B", "3B", "SS", "CIF", "MIF"]
+        ]
+        sorted_defensive_players = sorted(
+            defensive_players, key=lambda player: player.infield_score, reverse=True
+        )
+        save_to_excel(
+            sorted_defensive_players,
+            os.path.join(output_directory, "Infielders.xlsx"),
+            infield_fieldnames,
+            "infielder_score",
+        )
+        format_excel(
+            os.path.join(output_directory, "Infielders.xlsx"),
+        )
 
     # Outfield Stats
-    attr_names_copy = attr_names.copy()
-    attr_names_copy.insert(0, "is_red_flag")
-    attr_names_copy.append("outfield_score")
-    attr_names_copy.append("batting_score")
+    if selected_options["outfield"]:
+        outfield_fieldnames = fieldnames.copy()
+        if "outfield_score" not in outfield_fieldnames:
+            outfield_fieldnames.append("outfield_score")
+        if "batting_score" not in outfield_fieldnames:
+            outfield_fieldnames.append("batting_score")
 
-    defensive_players = [
-        player
-        for player in players
-        if player.PlayerPosition in ["Outfielder"]
-    ]
-    sorted_defensive_players = sorted(
-        defensive_players, key=lambda player: player.outfield_score, reverse=True
-    )
-    save_to_excel(
-        sorted_defensive_players,
-        os.path.join(output_directory, "Outfielder.xlsx"),
-        attr_names_copy,
-        "outfield_score",
-    )
-    format_excel(
-        os.path.join(output_directory, "Outfielder.xlsx"),
-    )
+        defensive_players = [
+            player
+            for player in players
+            if player.PlayerPosition in ["Outfielder"]
+        ]
+        sorted_defensive_players = sorted(
+            defensive_players, key=lambda player: player.outfield_score, reverse=True
+        )
+        save_to_excel(
+            sorted_defensive_players,
+            os.path.join(output_directory, "Outfielder.xlsx"),
+            outfield_fieldnames,
+            "outfield_score",
+        )
+        format_excel(
+            os.path.join(output_directory, "Outfielder.xlsx"),
+        )
 
     # Batting Stats
-    attr_names_copy = attr_names.copy()
-    attr_names_copy.insert(0, "is_red_flag")
-    attr_names_copy.append("batting_score")
-    batters = [player for player in players]
-    sorted_batters = sorted(
-        batters, key=lambda player: player.batting_score, reverse=True
-    )
-    save_to_excel(
-        sorted_batters, os.path.join(output_directory, "Batters.xlsx"), attr_names_copy, "batting_score"
-    )
-    format_excel(
-        os.path.join(output_directory, "Batters.xlsx"),
-    )
+    if selected_options["batting"]:
+        batting_fieldnames = fieldnames.copy()
+        if "batting_score" not in batting_fieldnames:
+            batting_fieldnames.append("batting_score")
+        batters = [player for player in players]
+        sorted_batters = sorted(
+            batters, key=lambda player: player.batting_score, reverse=True
+        )
+        save_to_excel(
+            sorted_batters, os.path.join(output_directory, "Batters.xlsx"), batting_fieldnames, "batting_score"
+        )
+        format_excel(
+            os.path.join(output_directory, "Batters.xlsx"),
+        )
 
     # GPA Stats
-    attr_names_copy = attr_names.copy()
-    save_to_excel(
-        players, os.path.join(output_directory, "GPA.xlsx"), attr_names_copy, "PlayerGPA"
-    )
-    format_excel(
-        os.path.join(output_directory, "GPA.xlsx"),
-    )
+    if selected_options["gpa"]:
+        gpa_fieldnames = fieldnames.copy()
+        save_to_excel(
+            players, os.path.join(output_directory, "GPA.xlsx"), gpa_fieldnames, "PlayerGPA"
+        )
+        format_excel(
+            os.path.join(output_directory, "GPA.xlsx"),
+        )
 
 def save_to_excel(players, file_path, fieldnames, score_column):
     """Saves players to excel file based on their position."""
-    data = [player.__dict__ for player in players]
-    df = pd.DataFrame(data, columns=fieldnames)
+    print(f"Ranking and exporting {file_path.split('\\')[-1]}...")
 
-    if score_column in df.columns:
+    for player in players:
+        if 'PlayerCommitted' not in player.__dict__:
+            player.PlayerCommitted = None  # Set a default value
+        if 'GameChangerName' not in player.__dict__:
+            player.GameChangerName = None  # Set a default value
+
+    data = [player.__dict__ for player in players]
+    df = pd.DataFrame(data)
+
+    # Reorder the DataFrame according to fieldnames ensuring all are included
+    df = df[fieldnames]
+
+    # Sort by score_column if it's one of the fieldnames
+    if score_column in fieldnames:
         df = df.sort_values(by=score_column, ascending=False)
 
     df.to_excel(file_path, index=False)
