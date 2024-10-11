@@ -223,6 +223,7 @@ def format_excel(file_path):
     # Get the header row values as a list to match column names
     header = [cell.value for cell in sheet[1]]
 
+    # TODO: Add logic for Tournament #
     # Iterate through rows to apply conditional formatting
     for row in sheet.iter_rows(min_row=2, max_row=sheet.max_row):
         is_red_flag_cell = row[0]  # Assuming 'is_red_flag' is the first column

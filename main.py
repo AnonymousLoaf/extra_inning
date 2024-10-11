@@ -2,6 +2,7 @@ from gui import PlayerNominationApp
 from load import load_players
 from export import export_to_excel
 from ttkthemes import ThemedTk
+from scoring import calculate_batting_rank
 import os
 
 def run_script(app):
@@ -9,7 +10,7 @@ def run_script(app):
     file = app.get_file()
 
     # Load the data
-    players, attr_names = load_players(file)
+    players, _ = load_players(file)
 
     selected_options = app.get_selected_options()
 
@@ -17,6 +18,10 @@ def run_script(app):
     for player in players:
         if should_process_player(player, selected_options):
             player.calculate_player_score()
+    
+    # Calculate batting rank
+    calculate_batting_rank(players, [], position_specific=False)
+    calculate_batting_rank(players, [], position_specific=True)
 
     # Export to excel
     export_to_excel(players, file, selected_options)
@@ -50,7 +55,7 @@ def should_process_player(player, options):
         return True
     if options['batting'] and hasattr(player, 'batting_score'):
         return True
-    if options['gpa'] and hasattr(player, 'gpa'):
+    if options['gpa'] and hasattr(player, 'PlayerGPA'):
         return True
     return False
 

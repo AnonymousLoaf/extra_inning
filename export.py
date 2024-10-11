@@ -8,7 +8,7 @@ def export_to_excel(players, file, selected_options):
     output_directory = os.path.dirname(file)
 
     fieldnames = [
-    "is_red_flag", "LastYearRank", "RankedThisYear", "WhereToRankRegionallyCoach", "WhereToRankNationallyCoach",
+    "is_red_flag", "pos_batting_rank", "global_batting_rank", "num_national_tournament", "LastYearRank", "RankedThisYear", "WhereToRankRegionallyCoach", "WhereToRankNationallyCoach",
     "PrefferedRecomendation", "Done", "Notes", "PlayerFirstName", "PlayerLastName", 
     "RankedPrevious", "PlayerHometown", "PlayerHighSchool", "x", "PlayerGPA", 
     "PlayerRegion", "PlayerCommitted", "PlayerCommittedTo", "ActionVideo",
@@ -38,8 +38,6 @@ def export_to_excel(players, file, selected_options):
             pitch_fieldnames.append("pitching_score")
         if "batting_score" not in pitch_fieldnames:
             pitch_fieldnames.append("batting_score")
-        if "pitcher_score" not in pitch_fieldnames:
-            pitch_fieldnames.append("pitcher_score")
         # Save pitchers to excel, independent from other positions
         save_to_excel(
             sorted_pitchers,
@@ -153,15 +151,16 @@ def export_to_excel(players, file, selected_options):
             os.path.join(output_directory, "GPA.xlsx"),
         )
 
+
 def save_to_excel(players, file_path, fieldnames, score_column):
     """Saves players to excel file based on their position."""
     print(f"Ranking and exporting {file_path.split('\\')[-1]}...")
 
     for player in players:
         if 'PlayerCommitted' not in player.__dict__:
-            player.PlayerCommitted = None  # Set a default value
+            player.PlayerCommitted = None
         if 'GameChangerName' not in player.__dict__:
-            player.GameChangerName = None  # Set a default value
+            player.GameChangerName = None
 
     data = [player.__dict__ for player in players]
     df = pd.DataFrame(data)

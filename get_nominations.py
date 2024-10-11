@@ -135,6 +135,25 @@ class ExcelData:
         except Exception as e:
             print(f"Error loading players: {e}")
 
+    def calculate_player_fielding_percent(self):
+        for player in self.players:
+            if player.TotalChances is not None and player.Assist is not None and player.Putouts is not None:
+                total_chances = float(player.TotalChances)
+                assists = float(player.Assist)
+                putouts = float(player.Putouts)
+                if total_chances > 0:
+                    fielding_perc = (putouts + assists) / total_chances
+                    player.FieldingPerc = fielding_perc
+
+    def calculate_player_batting_avg(self):
+        for player in self.players:
+            if player.PlayerAB is not None and player.PlayerHits is not None:
+                at_bats = float(player.PlayerAB)
+                hits = float(player.PlayerHits)
+                if at_bats > 0:
+                    batting_avg = hits / at_bats
+                    player.PlayerBA = batting_avg
+
 
     def check_players(self):
         gen_threshold = {
@@ -169,9 +188,6 @@ class ExcelData:
                             player.is_red_flag.append(stat)
                 except AttributeError:
                     pass
-
-
-
 
     def get(self, name):
         for player in self.players:
