@@ -22,6 +22,7 @@ class Player:
         self.is_red_flag = []
         self.error_list = []
         self.num_national_tournament = 0
+        self.CalculatedFieldingPerc = 0
 
 
     def __repr__(self):

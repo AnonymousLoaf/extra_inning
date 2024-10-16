@@ -59,6 +59,7 @@ def format_excel(file_path):
             "PlayerStrikeOuts",
         ],
         [
+            "CalculatedFieldingPerc",
             "FieldingPerc",
             "TotalChances",
             "Assist",
@@ -223,7 +224,6 @@ def format_excel(file_path):
     # Get the header row values as a list to match column names
     header = [cell.value for cell in sheet[1]]
 
-    # TODO: Add logic for Tournament #
     # Iterate through rows to apply conditional formatting
     for row in sheet.iter_rows(min_row=2, max_row=sheet.max_row):
         is_red_flag_cell = row[0]  # Assuming 'is_red_flag' is the first column
@@ -258,9 +258,9 @@ def format_excel(file_path):
     
     # Find and delete the 'is_red_flag' column
     header = [cell.value for cell in sheet[1]]
-    if "is_red_flag" in header:
-        col_index = header.index("is_red_flag") + 1  # openpyxl is 1-indexed
-        sheet.delete_cols(col_index)
+    # if "is_red_flag" in header:
+    #     col_index = header.index("is_red_flag") + 1  # openpyxl is 1-indexed
+    #     sheet.delete_cols(col_index)
 
     set_fixed_column_width(sheet)
     workbook.save(file_path)

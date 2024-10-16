@@ -8,13 +8,13 @@ def export_to_excel(players, file, selected_options):
     output_directory = os.path.dirname(file)
 
     fieldnames = [
-    "is_red_flag", "pos_batting_rank", "global_batting_rank", "num_national_tournament", "LastYearRank", "RankedThisYear", "WhereToRankRegionallyCoach", "WhereToRankNationallyCoach",
+    "is_red_flag", "LastYearRank", "RankedThisYear", "WhereToRankRegionallyCoach", "WhereToRankNationallyCoach",
     "PrefferedRecomendation", "Done", "Notes", "PlayerFirstName", "PlayerLastName", 
     "RankedPrevious", "PlayerHometown", "PlayerHighSchool", "x", "PlayerGPA", 
     "PlayerRegion", "PlayerCommitted", "PlayerCommittedTo", "ActionVideo",
     "Slapper", "PlayerPA", "PlayerAB", "PlayerBA", "PlayerOBP", "PlayerOPS", 
     "PlayerHits", "PlayerDoubles", "PlayerTriples", "PlayerHR", "PlayerRBI", 
-    "PlayerStrikeOuts", "PlayerPosition", "FieldingPerc", "TotalChances", "Assist",
+    "PlayerStrikeOuts", "PlayerPosition", "FieldingPerc", "CalculatedFieldingPerc", "TotalChances", "Assist",
     "Putouts", "PlayerArmVelo", "PlayerERA", "PlayerWHIP", "PlayerKs", 
     "PlayerBB", "PlayerIP", "PlayerBAA", "PlayerFastballSpeed", "PlayerChangeUpSpeed", 
     "PlayerPopTime", "PlayerSB", "PlayerATT", "PlayerAccomplishments", "CoachQuote", 
@@ -23,7 +23,7 @@ def export_to_excel(players, file, selected_options):
     "ContactEmail", "ContactPhone", "NominatorFirstName", "NominatorLastName", 
     "NominatorEmail", "NominatorPhone", "CoachNameFirst", "CoachNameLast", 
     "CoachEmail", "CoachPhone", "ClubTeamName", "GameChangerName", "AthletesGoLiveName", 
-    "OrgLeaderFirstName", "OrgLeaderLastName", "OrgEmail", "OrgPhone"
+    "OrgLeaderFirstName", "OrgLeaderLastName", "OrgEmail", "OrgPhone", "pos_batting_rank", "global_batting_rank", "num_national_tournament"
     ]
 
     # Pitchers Stats
@@ -165,6 +165,15 @@ def save_to_excel(players, file_path, fieldnames, score_column):
     data = [player.__dict__ for player in players]
     df = pd.DataFrame(data)
 
+    # Check if all fieldnames exist in the DataFrame
+    missing_columns = [col for col in fieldnames if col not in df.columns]
+
+    # Handle missing columns by filling with default values (e.g., None)
+    if missing_columns:
+        print(f"Warning: The following columns are missing from the data and will be filled with None: {missing_columns}")
+        for col in missing_columns:
+            df[col] = None
+
     # Reorder the DataFrame according to fieldnames ensuring all are included
     df = df[fieldnames]
 
@@ -172,4 +181,5 @@ def save_to_excel(players, file_path, fieldnames, score_column):
     if score_column in fieldnames:
         df = df.sort_values(by=score_column, ascending=False)
 
+    # Export to Excel
     df.to_excel(file_path, index=False)

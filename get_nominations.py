@@ -141,9 +141,25 @@ class ExcelData:
                 total_chances = float(player.TotalChances)
                 assists = float(player.Assist)
                 putouts = float(player.Putouts)
+                
                 if total_chances > 0:
-                    fielding_perc = (putouts + assists) / total_chances
-                    player.FieldingPerc = fielding_perc
+                    # Calculate fielding percentage
+                    calculated_fielding_perc = round((putouts + assists) / total_chances, 3)
+                    player.CalculatedFieldingPerc = calculated_fielding_perc
+
+                    # Check for existing FieldingPerc and compare
+                    existing_fielding_perc = getattr(player, "FieldingPerc", None)
+                    
+                    if existing_fielding_perc is not None:
+                        try:
+                            existing_fielding_perc = float(existing_fielding_perc)
+                            
+                            # Append to red flags if the difference is greater than 0.25
+                            if abs(calculated_fielding_perc - existing_fielding_perc) > 0.09:
+                                player.is_red_flag.append("CalculatedFieldingPerc")
+                        except ValueError:
+                            pass  # Skip if existing fielding percentage can't be converted to float
+
 
     def calculate_player_batting_avg(self):
         for player in self.players:
@@ -171,8 +187,18 @@ class ExcelData:
             "PlayerArmVelo": (0, None),
         }
 
+        # Set of hitting stats to skip for pitchers
+        hitting_stats = {"PlayerBA", "PlayerOPS", "PlayerOBP", "PlayerAB", "PlayerStrikeOuts", "PlayerHits", "PlayerPA", "PlayerRBI"}
+
         for player in self.players:
+            # Check if the player is a pitcher
+            is_pitcher = getattr(player, "PlayerPosition", None) == "Pitcher"
+            
             for stat, (min_val, max_val) in gen_threshold.items():
+                # Skip hitting stats for pitchers
+                if is_pitcher and stat in hitting_stats:
+                    continue
+                
                 try:
                     stat_value = getattr(player, stat)
                     if stat_value is not None:
@@ -181,7 +207,8 @@ class ExcelData:
                             stat_value = float(stat_value)
                         except ValueError:
                             continue  # Skip if stat_value cannot be converted to a float
-                        
+
+                        # Apply red flag logic
                         if min_val is not None and stat_value < min_val:
                             player.is_red_flag.append(stat)
                         if max_val is not None and stat_value > max_val:

@@ -1,23 +1,12 @@
-Chloe Ellis has an invalid TopTournaments value
-Kendall Cochran has an invalid TopTournaments value
-Warning: Shyanne Irvin in Catcher: FieldingPerc is zero
-Hildie Dempsey has an invalid TopTournaments value
-Allyssa Parker has an invalid TopTournaments value
-Warning: Ava Marmon in Catcher: PlayerATT is zero
-Jenna Adkins has an invalid TopTournaments value
-Grace Henry has an invalid TopTournaments value
-Caitlin Bunte has an invalid TopTournaments value
-Riley Nelson has an invalid TopTournaments value
-Amira Rodriguez has an invalid TopTournaments value
-Brookelyn Taylor has an invalid TopTournaments value
-Warning: Kezia Lucas in Pitcher: PlayerIP is zero
-Warning: Kezia Lucas in Pitcher: PlayerIP is zero
-Madeline Case has an invalid TopTournaments value
-Brinkley Moreton has an invalid TopTournaments value
-Warning: Kylie Grafa in Catcher: PlayerATT is zero
-Warning: Danika Spinogatti in Catcher: FieldingPerc is zero
-Lexie Hames has an invalid TopTournaments value
-Lauren Fettic has an invalid TopTournaments value
-Warning: Kyra Neiswender in Catcher: PlayerATT is zero
+Warning: Chloe Solis in Pitcher: PlayerIP is zero
+Warning: Chloe Solis in Pitcher: PlayerIP is zero
+Warning: Gwyneth Katterhenry in Pitcher: PlayerIP is zero
+Warning: Gwyneth Katterhenry in Pitcher: PlayerIP is zero
+Warning: Malaya Majam-Finch in Pitcher: PlayerIP is zero
+Warning: Malaya Majam-Finch in Pitcher: PlayerIP is zero
+Bria Bosiljevac has an invalid TopTournaments value
+Grace Halata has an invalid TopTournaments value
+Kynzee Anderson has an invalid TopTournaments value
+Malaya Majam-Fitch has an invalid TopTournaments value
 
-Total number of warnings: 21
+Total number of warnings: 10
