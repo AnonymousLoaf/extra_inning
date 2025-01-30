@@ -167,7 +167,7 @@ class ExcelData:
                 at_bats = float(player.PlayerAB)
                 hits = float(player.PlayerHits)
                 if at_bats > 0:
-                    batting_avg = hits / at_bats
+                    batting_avg = round(hits / at_bats, 3)
                     player.PlayerBA = batting_avg
 
 
