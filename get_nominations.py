@@ -167,8 +167,9 @@ class ExcelData:
                 at_bats = float(player.PlayerAB)
                 hits = float(player.PlayerHits)
                 if at_bats > 0:
-                    batting_avg = round(hits / at_bats, 3)
-                    player.PlayerBA = batting_avg
+                    # batting_avg = round(hits / at_bats, 3)
+                    # player.PlayerBA = batting_avg
+                    player.PlayerBA = player.PlayerBA
 
 
     def check_players(self):
