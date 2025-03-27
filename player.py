@@ -23,6 +23,7 @@ class Player:
         self.error_list = []
         self.num_national_tournament = 0
         self.CalculatedFieldingPerc = 0
+        self.CalculatedBA = 0
 
 
     def __repr__(self):

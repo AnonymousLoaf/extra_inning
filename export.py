@@ -12,7 +12,7 @@ def export_to_excel(players, file, selected_options):
     "PrefferedRecomendation", "Done", "Notes", "PlayerFirstName", "PlayerLastName", 
     "RankedPrevious", "PlayerHometown", "PlayerHighSchool", "x", "PlayerGPA", 
     "PlayerRegion", "PlayerCommitted", "PlayerCommittedTo", "ActionVideo",
-    "Slapper", "PlayerPA", "PlayerAB", "PlayerBA", "PlayerOBP", "PlayerOPS", 
+    "Slapper", "PlayerPA", "PlayerAB", "PlayerBA", "CalculatedBA", "PlayerOBP", "PlayerOPS", 
     "PlayerHits", "PlayerDoubles", "PlayerTriples", "PlayerHR", "PlayerRBI", 
     "PlayerStrikeOuts", "PlayerPosition", "FieldingPerc", "CalculatedFieldingPerc", "TotalChances", "Assist",
     "Putouts", "PlayerArmVelo", "PlayerERA", "PlayerWHIP", "PlayerKs", 

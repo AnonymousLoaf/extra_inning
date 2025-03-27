@@ -49,6 +49,7 @@ def format_excel(file_path):
             "PlayerPA",
             "PlayerAB",
             "PlayerBA",
+            "CalculatedBA",
             "PlayerOBP",
             "PlayerOPS",
             "PlayerHits",

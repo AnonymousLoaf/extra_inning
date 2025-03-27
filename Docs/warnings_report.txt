@@ -2,11 +2,28 @@ Warning: Chloe Solis in Pitcher: PlayerIP is zero
 Warning: Chloe Solis in Pitcher: PlayerIP is zero
 Warning: Gwyneth Katterhenry in Pitcher: PlayerIP is zero
 Warning: Gwyneth Katterhenry in Pitcher: PlayerIP is zero
+Warning: Bella Granata in Catcher: PlayerATT is zero
+Warning: Bella Granata in Catcher: FieldingPerc is zero
 Warning: Malaya Majam-Finch in Pitcher: PlayerIP is zero
 Warning: Malaya Majam-Finch in Pitcher: PlayerIP is zero
+Stevie South has an invalid TopTournaments value
+Payton Roberson has an invalid TopTournaments value
+Payton Westra has an invalid TopTournaments value
+Milan Torres has an invalid TopTournaments value
 Bria Bosiljevac has an invalid TopTournaments value
+Hannah Jo Smith has an invalid TopTournaments value
+Avary Stockwell has an invalid TopTournaments value
+Halle Bailey has an invalid TopTournaments value
+Kensi Arringdale has an invalid TopTournaments value
 Grace Halata has an invalid TopTournaments value
+Aubrey McLaughlin has an invalid TopTournaments value
+Maddie Smith has an invalid TopTournaments value
+Kale'a Tindal has an invalid TopTournaments value
 Kynzee Anderson has an invalid TopTournaments value
+Karmen Vasquez has an invalid TopTournaments value
+Trinity Spencer has an invalid TopTournaments value
+Jordyn Johnsen has an invalid TopTournaments value
+Kynleigh Ball has an invalid TopTournaments value
 Malaya Majam-Fitch has an invalid TopTournaments value
 
-Total number of warnings: 10
+Total number of warnings: 27

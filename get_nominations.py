@@ -137,39 +137,58 @@ class ExcelData:
 
     def calculate_player_fielding_percent(self):
         for player in self.players:
-            if player.TotalChances is not None and player.Assist is not None and player.Putouts is not None:
-                total_chances = float(player.TotalChances)
-                assists = float(player.Assist)
-                putouts = float(player.Putouts)
-                
+            total_chances = getattr(player, 'TotalChances', None)
+            assists = getattr(player, 'Assist', None)
+            putouts = getattr(player, 'Putouts', None)
+
+            if total_chances is not None and assists is not None and putouts is not None:
+                total_chances = float(total_chances)
+                assists = float(assists)
+                putouts = float(putouts)
+
                 if total_chances > 0:
-                    # Calculate fielding percentage
                     calculated_fielding_perc = round((putouts + assists) / total_chances, 3)
                     player.CalculatedFieldingPerc = calculated_fielding_perc
 
-                    # Check for existing FieldingPerc and compare
                     existing_fielding_perc = getattr(player, "FieldingPerc", None)
-                    
+
                     if existing_fielding_perc is not None:
                         try:
                             existing_fielding_perc = float(existing_fielding_perc)
-                            
-                            # Append to red flags if the difference is greater than 0.25
                             if abs(calculated_fielding_perc - existing_fielding_perc) > 0.09:
                                 player.is_red_flag.append("CalculatedFieldingPerc")
                         except ValueError:
-                            pass  # Skip if existing fielding percentage can't be converted to float
+                            pass
+
 
 
     def calculate_player_batting_avg(self):
         for player in self.players:
-            if player.PlayerAB is not None and player.PlayerHits is not None:
-                at_bats = float(player.PlayerAB)
-                hits = float(player.PlayerHits)
+            at_bats = getattr(player, 'PlayerAB', None)
+            hits = getattr(player, 'PlayerHits', None)
+
+
+            if at_bats is not None and hits is not None:
+                at_bats = float(at_bats)
+                hits = float(hits)
+
                 if at_bats > 0:
-                    # batting_avg = round(hits / at_bats, 3)
-                    # player.PlayerBA = batting_avg
-                    player.PlayerBA = player.PlayerBA
+                    calculated_ba = round(hits / at_bats, 3)
+                    player.CalculatedBA = calculated_ba
+
+                    existing_ba = getattr(player, "PlayerBA", None)
+                    player.PlayerBA = existing_ba
+
+                    existing_ba = getattr(player, "PlayerBA", None)
+
+                    if existing_ba is not None:
+                        try:
+                            existing_ba = float(existing_ba)
+                            if abs(calculated_ba - existing_ba) > 0.02:
+                                player.is_red_flag.append("CalculatedBA")
+                        except ValueError:
+                            pass
+
 
 
     def check_players(self):
